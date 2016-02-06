@@ -1,8 +1,8 @@
-fancybox: true ## If you want to use fancybox please set the value to true
+fancybox:  ## If you want to use fancybox please set the value to true
 duoshuo: ## Your duoshuo_shortname, e.g. username
-disqus: ## Your disqus_shortname, e.g. username
-google_search: true ## Use Google search, true/false
-baidu_search: ## Use Baidu search, true/false
+disqus: sai89 ## Your disqus_shortname, e.g. username
+google_search:  ## Use Google search, true/false
+baidu_search: true## Use Baidu search, true/false
 swiftype: ## Your swiftype_key, e.g. m7b11ZrsT8Me7gzApciT
 tinysou: ## Your tinysou_key, e.g. 4ac092ad8d749fdc6293
 google_analytics: ## Your Google Analytics tracking id, e.g. UA-42425684-2
@@ -31,12 +31,9 @@ widgets: ## Six widgets in sidebar provided: search, category, tag, recent_posts
   - links
 
 links:
-  - title: site-name1
-    url: http://www.example1.com/
-  - title: site-name2
-    url: http://www.example2.com/
-  - title: site-name3
-    url: http://www.example3.com/
+  - title: FEX
+    url: http://fex.baidu.com/
+
 
 # Static files
 js: js

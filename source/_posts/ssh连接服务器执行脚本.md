@@ -2,6 +2,7 @@
 title: ssh连接时脚本自动执行
 date: 2015-08-10 16:36:59
 tags: [ssh]
+comments : true
 ---
 
 

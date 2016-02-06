@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 黄向赛
+title: SAI的Blog
 subtitle:  这里没有故事，有的只是成长的过程
 description:
 author: xiangsai Huang 
@@ -45,8 +45,13 @@ highlight:
 
 # Category & Tag
 default_category: uncategorized
-category_map:
+category_map: 
+- Sports
+- Baseball
 tag_map:
+- Injury
+- Fight
+- Shocking
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
@@ -69,3 +74,11 @@ theme: maupassant
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type:
+
+#plugin
+### feed atom.xml
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
