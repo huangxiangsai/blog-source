@@ -18,6 +18,9 @@ menu:
   - page: about
     directory: about/
     icon: icon-about
+  - page: history
+    directory: history/
+    icon: icon-history
   - page: rss
     directory: atom.xml
     icon: icon-rss
