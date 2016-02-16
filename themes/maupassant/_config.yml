@@ -18,6 +18,8 @@ menu:
   - page: about
     directory: about/
     icon: icon-about
+  - page: readlist
+    directory: booklist/
   - page: history
     directory: history/
     icon: icon-history
