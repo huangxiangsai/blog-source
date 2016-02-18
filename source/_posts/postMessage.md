@@ -1,5 +1,5 @@
 ---
-title: HTML5 Cross-Document Messaging
+title: HTML5 Cross-Document Messaging(postMessage)
 tags: [HTML5,postMessage]
 date: 2016.02.17
 ---
@@ -7,7 +7,7 @@ date: 2016.02.17
 
 在HTML5之前，浏览器窗口或frames之间的信息传输因为要考虑安全因素是被限制了的。
 
-通过Cross-Document Messaging允许浏览器*windows, tabs, and iFrames*之间跨域通讯。
+通过Cross-Document Messaging允许浏览器**windows, tabs, and iFrames**之间跨域通讯。
 
 我们使用`postMessage()`方法去发送一条信息。
 
@@ -23,20 +23,25 @@ postMessage需要接受两个参数
 
 例如我们可以使用
 
-`var new_wd = window.open('http://demos.devsai.com')`
+```
+var new_wd = window.open('http://demos.devsai.com');
+
+```
 
 打开一个新tab,
 'window.open'返回的就是新打开的`window`对象,
 所以就可以这样来给新打开的window、tab窗口发送信息,
 
-`new_wd.postMessage('hello demos','http://demos.devsai.com/postmessage/receiver.html');`
+```
+new_wd.postMessage('hello demos','http://demos.devsai.com/postmessage/receiver.html');
+
+```
 
 **window接受信息**
 
 如上述例子，可以在`http://demos.devsai.com/postmessage/receiver.html`中添加如下代码:
 
-
-
+```
 	var receiverHandler = function(e){
 		if (e.origin !== "http://www.devsai.com")//判断是哪个域过来的信息
       		return;
@@ -44,15 +49,18 @@ postMessage需要接受两个参数
 	}
 
 	window.addEventListener('message',receiverHandler);
-
+	
+```
 
 
 接收的窗口除了使用`window.open`打开的以外，还可以是iframe窗口,我们可以通过以下代码获得iframe的window对象，
 并对iframe发送信息.
 
+```
 	var iframe_win = document.getElementById('recevier').contentWindow;
 	iframe_win.postMessage('hello iframe','http://demos.devsai.com/postmessage/receiver.html');
-
+	##
+```
 
 **浏览器的支持**
 现在主流的浏览器都是支持`postMessage()`，也包括IE8+,但在IE8、IE9中还是有限制的，只能在docuemnt与iframe之间通讯才可使用`postMessage()`,想要在跨window或者tab之间通讯必须是IE10+.
