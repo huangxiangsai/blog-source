@@ -64,11 +64,11 @@ layout: demo
 		</iframe>
 
 		<h3>与window、tabs之间信息通信</h3>
-		<div class="fl ">
+		<div class=" ">
 			<label >2信息：</label>
 			<input type="text" placeholder="输入信息" id="sendInput2" >
 		</div>
-		<div class="cl">
+		<div class="cl mgt">
 			<label >点击按钮打开新窗口:</label>
 			<button class="mgl " onclick="sendWindow();">点击发送</button>
 		</div>
@@ -97,7 +97,7 @@ layout: demo
 			var result ;
 			if(data.input == 'getData'){
 				result = document.getElementById('getData');
-			}else if(data.inout == 'getData2'){
+			}else if(data.input == 'getData2'){
 				result = document.getElementById('getData2');
 			}
 			result.innerHTML = data.value;
@@ -106,7 +106,10 @@ layout: demo
 		function sendWindow(){
 			var value = document.getElementById('sendInput2').value;
 			var new_w = window.open('http://demos.devsai.com/postmessage/receiver.html');
-			new_w.postMessage( {input : 'getData2', value : value} , 'http://demos.devsai.com');	
+
+			setTimeout(function() {//等待页面加载完再发送信息
+				new_w.postMessage( {input : 'getData2', value : value} , 'http://demos.devsai.com');	
+			}, 1000);
 		}
 
 	</script>
