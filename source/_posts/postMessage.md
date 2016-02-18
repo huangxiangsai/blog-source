@@ -72,3 +72,5 @@ new_wd.postMessage('hello demos','http://demos.devsai.com/postmessage/receiver.h
 |	8+			|	3.0+ 		|	1.0+ 		|	4.0+ 		|	9.5+ 		|
 
 最后，<a href="/demo/postmessage/sender.html" target="_blank">想看DEMO,在这里穿越</a>
+
+DEMO也放在了github上，想要看code的同学，<a href="https://github.com/huangxiangsai/postMessage-demo" target="_blank">点击这里</a>
