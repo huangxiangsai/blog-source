@@ -25,11 +25,11 @@ description: "前段时间由于工作需要，把项目从svn迁至了git上。
 ### 实际用到的命令(更新中...)
 
 #### **检出历史版本到分支**
+```
+git checkout 分支号
+git branch -b [新分支名]
 
-     git checkout 分支号
-     git branch -b [新分支名]
-
-
+```
 #### **设置不忽略大小写**
   `git config core.ignorecase false`
 
@@ -39,6 +39,9 @@ cd ~/
 vim .git-credentials
 
      https://[username]:[password]@github.com
+
+
+git config --global credential.helper store
 ```
 
 #### **撤销git add操作**
@@ -49,10 +52,12 @@ git reset HEAD   (相当于把git add . 操作的文件撤出暂存区)
 
 #### **远程库里已经存在这文件夹，但又想忽略此文件夹**
 
+![](/images/gitignore.png)
+
 ```
 git rm --cached filepath #删除库里的文件记录
 git add .
 git commit -m 'fiexed gitIgnore '
 ```
 
-git config --global credential.helper store
+
