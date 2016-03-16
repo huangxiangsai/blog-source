@@ -27,7 +27,7 @@ description: "前段时间由于工作需要，把项目从svn迁至了git上。
 
 #### **生成SSH key**
 ```
-ssh-keygen -t rsa -C "devsai.huang1@gmail.com"
+ssh-keygen -t rsa -C "xxxx@gmail.com"
 ```
 
 
@@ -42,14 +42,24 @@ git branch -b [新分支名]
 
 **提交代码不用输入用户名密码**
 ```
-cd ~/  
-vim .git-credentials
+#解决方法 1
+#通过ssh认证
+#使用 git@... clone项目
 
-     https://[username]:[password]@github.com
 
+#解决方法 2
+#可以不输密码 提交http地址的项目
+ 
+vim ~/.git-credentials
+
+     https://[username]:[password]@github.com  #github
+     http://[username]:[password]@gitlab.xxx.com  #gitlab
 
 git config --global credential.helper store
 ```
+
+两种方法结合可完全避免输密码提交
+
 
 #### **撤销git add操作**
 
