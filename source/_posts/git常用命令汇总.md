@@ -27,7 +27,7 @@ description: "前段时间由于工作需要，把项目从svn迁至了git上。
 
 #### **生成SSH key**
 ```
-ssh-genkey -t rsa -C "devsai.huang1@gmail.com"
+ssh-keygen -t rsa -C "devsai.huang1@gmail.com"
 ```
 
 
