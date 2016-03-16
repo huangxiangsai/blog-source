@@ -24,6 +24,13 @@ description: "前段时间由于工作需要，把项目从svn迁至了git上。
 
 ### 实际用到的命令(更新中...)
 
+
+#### **生成SSH key**
+```
+ssh-genkey -t rsa -C "devsai.huang1@gmail.com"
+```
+
+
 #### **检出历史版本到分支**
 ```
 git checkout 分支号
@@ -60,4 +67,22 @@ git add .
 git commit -m 'fiexed gitIgnore '
 ```
 
+#### 上线版本，打tag加版本号
+
+```
+# 创建轻量标签
+$ git tag v0.1.2-light
+
+# 创建附注标签
+$ git tag -a v0.1.2 -m “0.1.2版本”
+
+# 用git show命令可以查看标签的版本信息
+$ git show v0.1.2
+
+$ git tag -d v0.1.2 # 删除标签
+
+$ git tag -a v0.1.1 4fbc5d0  #给指定的commit打标签 
+
+$ git push origin v0.1.2 # 将v0.1.2标签提交到git服务器
+```
 
