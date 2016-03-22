@@ -22,8 +22,9 @@ description: "前段时间由于工作需要，把项目从svn迁至了git上。
 <a href="/images/2015/08/2010072023345292.png" target="_blank">查看原图</a>
 ![](/images/2015/08/2010072023345292.png)
 
-### 实际用到的命令(更新中...)
+### 实际用到的命令(持续更新中...)
 
+下述内容或许上图中已提到，但为更方便的阅读与copy
 
 #### **生成SSH key**
 ```
@@ -37,14 +38,24 @@ git checkout 分支号
 git branch -b [新分支名]
 
 ```
+
+#### **常用的自定义命令**
+```
+#方便查看当前的文件状态
+git config --global alias.s "status -s" 
+#方便查看日志 人性化得显示时间，显示提交人
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
+
+
 #### **设置不忽略大小写**
   `git config core.ignorecase false`
 
-**提交代码不用输入用户名密码**
+#### **提交代码不用输入用户名密码**
 ```
 #解决方法 1
 #通过ssh认证
-#使用 git@... clone项目
+#使用 git@... clone项目，之后的git操作都无需输入用户名、密码
 
 
 #解决方法 2
@@ -59,6 +70,11 @@ git config --global credential.helper store
 ```
 
 两种方法结合可完全避免输密码提交
+
+其实`.git-credentials`这个文件也可以不用自己来添加，
+只需设置`git config --global credential.helper store`
+不自己手动添加的`.git-credentials`的影响就是，做git相关操作的时候需要输一遍用户名、密码。
+然后git会自动生成`.git-credentials`文件并在文件中添加用户名密码
 
 
 #### **撤销git add操作**
@@ -76,6 +92,34 @@ git rm --cached filepath #删除库里的文件记录
 git add .
 git commit -m 'fiexed gitIgnore '
 ```
+
+#### **合并多次的提交**
+有时我们会为修改一个BUG而提交多次，（修复一个BUG，提交后，由测试人员确认，发现还是有问题，然后继续做修复-提交的动作）
+这时候就会感觉这多次的提交没有必要的，查看日志时也显得很凌乱。所以有必要对这些的提交进行合并提交的动作。
+
+```
+git rebase -i HEAD^^  #合并近两次的提交
+#or
+git rebase -i HEAD^^^ #合并近三次的提交
+#or
+git rebase -i b3958ef #合并b3958ef之前的提交记录
+```
+实例如下：
+
+![](/images/git-rebase-1.png)
+
+![](/images/git-rebase-2.png)
+
+![](/images/git-rebase-3.png)
+
+![](/images/git-rebase-4.png)
+
+![](/images/git-rebase-5.png)
+
+![](/images/git-rebase-6.png)
+
+
+
 
 #### 上线版本，打tag加版本号
 
