@@ -1,5 +1,5 @@
 ---
-title:git出错 fatal:multiple stage entriesfor merged file
+title: git出错 fatal:multiple stage entriesfor merged file
 date: 2016-04-08
 tags: [git]
 ---
