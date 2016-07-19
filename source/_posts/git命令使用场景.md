@@ -20,9 +20,9 @@ tags: [git]
 
 现在我们使用git了，我们有'银弹' ：
 
-	git stash 
+		git stash 
 
-	git stash pop
+		git stash pop
 
 
 第一个命令在我们突然有新需求插入时使用，它会保存下当前所有的修改文件，使工作区变成无修改的状态。
