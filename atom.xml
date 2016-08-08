@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[SAI的Blog]]></title>
+  <subtitle><![CDATA[这里没有故事，有的只是成长的过程]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://blog.devsai.com/"/>
+  <updated>2016-02-17T03:20:28.000Z</updated>
+  <id>http://blog.devsai.com/</id>
+  
+  <author>
+    <name><![CDATA[xiangsai Huang]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[websocket介绍]]></title>
+    <link href="http://blog.devsai.com/2016/02/17/websocket/"/>
+    <id>http://blog.devsai.com/2016/02/17/websocket/</id>
+    <published>2016-02-17T03:20:28.000Z</published>
+    <updated>2016-02-17T03:20:28.000Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[HTML5 Cross-Document Messaging(postMessage)]]></title>
+    <link href="http://blog.devsai.com/2016/02/17/postMessage/"/>
+    <id>http://blog.devsai.com/2016/02/17/postMessage/</id>
+    <published>2016-02-16T16:00:00.000Z</published>
+    <updated>2016-02-18T06:20:06.000Z</updated>
+    <content type="html"><![CDATA[<p>在HTML5之前，浏览器窗口或frames之间的信息传输因为要考虑安全因素是被限制了的。</p>
+<p>通过Cross-Document Messaging允许浏览器<strong>windows, tabs, and iFrames</strong>之间跨域通讯。</p>
+<p>我们使用<code>postMessage()</code>方法去发送一条信息。</p>
+<p><strong>postMessage发送信息</strong></p>
+<p>postMessage需要接受两个参数</p>
+<ul>
+<li><strong>message</strong> 要发送的信息，可以是<code>string</code>也可以<code>object</code></li>
+<li><strong>targetOrigin</strong> 接受信息的窗口的地址，这地址由接受窗口的protocol, port and hostname组成<br>也可以使用<code>*</code>来匹配任意的URL，但这会存在安全问题。</li>
+</ul>
+<p>这postMessage方法是被<strong>要接受信息的window所调用</strong>。</p>
+<p>例如我们可以使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> new_wd</span> = window.<span class="keyword">open</span>('http:<span class="comment">//demos.devsai.com');</span></span><br></pre></td></tr></table></figure>
+<p>打开一个新tab,<br>‘window.open’返回的就是新打开的<code>window</code>对象,<br>所以就可以这样来给新打开的window、tab窗口发送信息,</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span><span class="number">_</span>wd.postMessage(<span class="string">'hello demos'</span>,<span class="string">'http://demos.devsai.com/postmessage/receiver.html'</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>window接受信息</strong></p>
+<p>如上述例子，可以在<code>http://demos.devsai.com/postmessage/receiver.html</code>中添加如下代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> receiverHandler = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (e.origin !== <span class="string">"http://www.devsai.com"</span>)<span class="comment">//判断是哪个域过来的信息</span></span><br><span class="line">     		<span class="keyword">return</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(e.data);<span class="comment">//接收到的信息</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>,receiverHandler);</span><br></pre></td></tr></table></figure>
+<p>接收的窗口除了使用<code>window.open</code>打开的以外，还可以是iframe窗口,我们可以通过以下代码获得iframe的window对象，<br>并对iframe发送信息.</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> iframe_win = <span class="built_in">document</span>.getElementById(<span class="string">'recevier'</span>).contentWindow;</span><br><span class="line">iframe_win.postMessage(<span class="string">'hello iframe'</span>,<span class="string">'http://demos.devsai.com/postmessage/receiver.html'</span>);</span><br><span class="line"><span class="comment">##</span></span><br></pre></td></tr></table></figure>
+<p><strong>浏览器的支持</strong><br>现在主流的浏览器都是支持<code>postMessage()</code>，也包括IE8+,但在IE8、IE9中还是有限制的，只能在docuemnt与iframe之间通讯才可使用<code>postMessage()</code>,想要在跨window或者tab之间通讯必须是IE10+.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">IE</th>
+<th style="text-align:center">FIREFOX</th>
+<th style="text-align:center">CHROME</th>
+<th style="text-align:center">SAFARI</th>
+<th style="text-align:center">OPERA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">8+</td>
+<td style="text-align:center">3.0+</td>
+<td style="text-align:center">1.0+</td>
+<td style="text-align:center">4.0+</td>
+<td style="text-align:center">9.5+</td>
+</tr>
+</tbody>
+</table>
+<p>最后，<a href="/demo/postmessage/sender.html" target="_blank">想看DEMO,在这里穿越</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在HTML5之前，浏览器窗口或frames之间的信息传输因为要考虑安全因素是被限制了的。</p>
+<p>通过Cross-Document Messaging允许浏览器<strong>windows, tabs, and iFrames</strong>之间跨域通讯。</p>]]>
+    </summary>
+    
+      <category term="HTML5" scheme="http://blog.devsai.com/tags/HTML5/"/>
+    
+      <category term="postMessage" scheme="http://blog.devsai.com/tags/postMessage/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[又是个新的开始]]></title>
+    <link href="http://blog.devsai.com/2016/02/16/this-year/"/>
+    <id>http://blog.devsai.com/2016/02/16/this-year/</id>
+    <published>2016-02-15T16:00:00.000Z</published>
+    <updated>2016-02-17T06:45:35.000Z</updated>
+    <content type="html"><![CDATA[<p>2016新春已过，又是新的一年，也是一个新的开始。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>2016新春已过，又是新的一年，也是一个新的开始。</p>
+]]>
+    </summary>
+    
+      <category term="随记" scheme="http://blog.devsai.com/tags/%E9%9A%8F%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[bower下载依赖时git 超时问题]]></title>
+    <link href="http://blog.devsai.com/2015/09/03/bower%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96%E6%97%B6git%20%E8%B6%85%E6%97%B6%E9%97%AE%E9%A2%98/"/>
+    <id>http://blog.devsai.com/2015/09/03/bower下载依赖时git 超时问题/</id>
+    <published>2015-09-03T08:36:59.000Z</published>
+    <updated>2016-02-05T10:32:48.000Z</updated>
+    <content type="html"><![CDATA[<p>##问题描述</p>
+<p>执行命令：<code>bower install jquery-pjax</code></p>
+<p>出现的错误信息：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bower error status <span class="tag">code</span> of git: <span class="number">128</span></span><br><span class="line">fatal: unable to connect to github<span class="class">.com</span>:</span><br><span class="line">github<span class="class">.com</span>[<span class="number">0</span>: 你的IP]: errno=Operation timed out</span><br></pre></td></tr></table></figure></p>
+<p>其实这也不是bower下载依赖的问题， 而是git请求数据的问题 </p>
+<p>这里以’bower下载依赖时git 超时问题’命题，主要还是因为是在使用<code>bower install</code>时出现的错.</p>
+<p>这可以是需要用https才能读到数据<br>解决方法：输入命令</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --<span class="keyword">global</span> url.<span class="string">"https://"</span>.<span class="keyword">insteadOf</span> git:<span class="comment">//</span></span><br></pre></td></tr></table></figure>
+<p>##关于 bower </p>
+<p>bower就是一个前端的依赖包管理器，就相当于java中流行的依赖管理工具MAVEN。</p>
+<p>bower与npm很像，但又不同，我的理解是,bower主要服务于web项目前端依赖,而npm 则主要服务于nodejs.</p>
+<p><a href="https://blog.openshift.com/day-1-bower-manage-your-client-side-dependencies/" target="_blank">openshift</a> 上一篇文章 对bower是什么，为什么使用它，怎么使用它等一些问题进行说明。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[bower就是一个前端的依赖包管理器，就相当于java中流行的依赖管理工具MAVEN。bower与npm很像，但又不同，我的理解是,bower主要服务于web项目前端依赖,而npm 则主要服务于nodejs.]]>
+    
+    </summary>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ssh连接时脚本自动执行]]></title>
+    <link href="http://blog.devsai.com/2015/08/10/ssh%E8%BF%9E%E6%8E%A5%E6%97%B6%E8%84%9A%E6%9C%AC%E8%87%AA%E5%8A%A8%E6%89%A7%E8%A1%8C/"/>
+    <id>http://blog.devsai.com/2015/08/10/ssh连接时脚本自动执行/</id>
+    <published>2015-08-10T08:36:59.000Z</published>
+    <updated>2016-02-06T06:20:47.000Z</updated>
+    <content type="html"><![CDATA[<p>每次登陆远程服务器时，都会自动的执行当前用户下的.bash_profile文件。</p>
+<p>只需要在里面写入你想要的脚本执行语句，就可以实现ssh连接时自动执行脚本的功能了.</p>
+<p>示例如下:</p>
+<p>登陆到服务器后 通过命令编写脚本 :<code>cd ~/ &amp;&amp; vim .bash_profile</code></p>
+<p>添加红色区内容 :<br><img src="/images/2015/08/edit.jpg" alt="edit"></p>
+<p>保存后， ssh退出重新连接。</p>
+<p><img src="/images/2015/08/edited.jpg" alt=""></p>
+<p>就能看到我们写的内容被执行了。</p>
+<p>当然 你可以做些更有意义的、更复杂的事情.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>每次登陆远程服务器时，都会自动的执行当前用户下的.bash_profile文件。</p>
+<p>只需要在里面写入你想要的脚本执行语句，就可以实现ssh连接时自动执行脚本的功能了.</p>
+<p>示例如下:</p>
+<p>登陆到服务器后 通过命令编写脚本 :<code>cd ]]>
+    </summary>
+    
+      <category term="ssh" scheme="http://blog.devsai.com/tags/ssh/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[liunx中获得文件的修改日期]]></title>
+    <link href="http://blog.devsai.com/2015/07/11/liunx%E4%B8%AD%E8%8E%B7%E5%BE%97%E6%96%87%E4%BB%B6%E7%9A%84%E4%BF%AE%E6%94%B9%E6%97%A5%E6%9C%9F/"/>
+    <id>http://blog.devsai.com/2015/07/11/liunx中获得文件的修改日期/</id>
+    <published>2015-07-11T08:36:59.000Z</published>
+    <updated>2016-02-06T01:21:17.000Z</updated>
+    <content type="html"><![CDATA[<p>有时候，我们需要知道某个文件有没有被修改过，以此做出相应的处理。</p>
+<p>在liunx中， 就可以使用以下的脚本来实现 ：</p>
+<pre><code>stat openapi.less | grep -i Modify | awk -F. &apos;{print $1}&apos; | awk &apos;{print $2$3}&apos;| awk -F- &apos;{print $1$2$3}&apos; | awk -F: &apos;{print $1$2$3}&apos;
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>有时候，我们需要知道某个文件有没有被修改过，以此做出相应的处理。</p>
+<p>在liunx中， 就可以使用以下的脚本来实现 ：</p>
+<pre><code>stat openapi.less | grep -i Modify | awk -F. &apos;{print]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[git常用命令汇总]]></title>
+    <link href="http://blog.devsai.com/2015/07/09/git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/"/>
+    <id>http://blog.devsai.com/2015/07/09/git常用命令汇总/</id>
+    <published>2015-07-09T08:36:59.000Z</published>
+    <updated>2016-02-06T01:11:01.000Z</updated>
+    <content type="html"><![CDATA[<p>前段时间由于工作需要，把项目从svn迁至了git上。</p>
+<p>为此，公司的git高手做了一次分享。我们这些小白也从网上找资源，以便能尽快的入门。</p>
+<p>在这过程中，队里伙伴找到了张图片，非常全的总结了git的常用命令。</p>
+<p>虽然都不知道这图是谁分享的，但还是非常的感谢。</p>
+<p><a href="/images/2015/08/2010072023345292.png" target="_blank">查看原图</a><br><img src="/images/2015/08/2010072023345292.png" alt=""></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[前段时间由于工作需要，把项目从svn迁至了git上。
+为此，公司的git高手做了一次分享。我们这些小白也从网上找资源，以便能尽快的入门。
+在这过程中，队里伙伴找到了张图片，非常全的总结了git的常用命令。
+虽然都不知道这图是谁分享的，但还是非常的感谢。]]>
+    
+    </summary>
+    
+      <category term="git" scheme="http://blog.devsai.com/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[防淘宝注册验证滑动效果]]></title>
+    <link href="http://blog.devsai.com/2015/07/09/%E9%98%B2%E6%B7%98%E5%AE%9D%E6%B3%A8%E5%86%8C%E9%AA%8C%E8%AF%81%E6%BB%91%E5%8A%A8%E6%95%88%E6%9E%9C/"/>
+    <id>http://blog.devsai.com/2015/07/09/防淘宝注册验证滑动效果/</id>
+    <published>2015-07-09T08:36:59.000Z</published>
+    <updated>2016-02-06T01:14:53.000Z</updated>
+    <content type="html"><![CDATA[<p>不多废话，直接看效果。</p>
+<p></p><p data-height="268" data-theme-id="0" data-slug-hash="BNEPON" data-default-tab="result" data-user="huangxiangsai" class="codepen">See the Pen <a href="http://codepen.io/huangxiangsai/pen/BNEPON/" target="_blank" rel="external">BNEPON</a> by 黄向赛 (<a href="http://codepen.io/huangxiangsai" target="_blank" rel="external">@huangxiangsai</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>不多废话，直接看效果。</p>
+<p></p><p data-height="268" data-theme-id="0" data-slug-hash="BNEPON" data-default-tab="result" data-user="huangxiangsai"]]>
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.devsai.com/tags/JavaScript/"/>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[jQuery.ajax在IE中跨域请求]]></title>
+    <link href="http://blog.devsai.com/2015/06/19/jQuery.ajax%E5%9C%A8IE%E4%B8%AD%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82/"/>
+    <id>http://blog.devsai.com/2015/06/19/jQuery.ajax在IE中跨域请求/</id>
+    <published>2015-06-19T08:36:59.000Z</published>
+    <updated>2016-02-06T01:20:23.000Z</updated>
+    <content type="html"><![CDATA[<p>在小的项目中，估计永远都不会碰到跨域请求的问题。始终都是在一个域下面，可能连静态和动态都是在一起。</p>
+<p>但是一个大项目，会将里面的业务拆分成多个子项目，根据业务的不同，子项目都会有它自己的子域。 所以在主项目中，访问不同业务下的接口，将会发生跨域的问题。</p>
+<p>一般我们对于跨域会采用下以两种方式解决：</p>
+<blockquote>
+<ol>
+<li><p>通过在返回的头部 <code>Access-Control-Allow-Origin</code> 添加指定的域，来允许跨域。</p>
+</li>
+<li><p>使用jsonp方式，实现跨域请求。</p>
+</li>
+</ol>
+</blockquote>
+<p>然而，很多时候，接口已经存在，并且已经在别处使用（不存在跨域问题），这时，一个在不同域的地方需要调用这个接口，我们第一想到的就是使用上述的第一种方式来解决跨域问题。</p>
+<p>因为这样改动是最小的（程序猿都很懒的）</p>
+<p>我也是一样，后端的童鞋改完后，我在chrome上调试下可以了。（我真的很厉害，虽然代码都不是我改的，只是刷了下页面）。</p>
+<p>完了，在我们可爱的IE上也要试试的（我是IE9），不试不知道，一试吓一跳，通过fiddler居然没有找到请求。（IE真调皮）</p>
+<p>没办法只有打开IE简陋的调试工具，在对应的<code>done</code>和<code>fail</code>中打印些信息出来。再次刷新页面后，果然进入的fail，并打印出了 <code>no transport</code> 。</p>
+<p>这是什么错，没见过啊。于是就开始各种搜索， 搜索的结果，大致有两类，</p>
+<p>一种是说，这跟IE的安全设置有关，要进入xxx &gt;&gt; xxx 然后再设置下就好了。</p>
+<p>还有一种是说，直接换成<code>jsonp</code>吧。</p>
+<p>第一种完全不靠谱，不可能让每个用户都这么干啊，pass ,第二种嘛，不多说了，还是再找找其他的方法吧。实在没办法才去想这么做。</p>
+<p>最终，还在通过万能的google，找到了解决方法。 需要通过<code>jQuery.ajaxTransport</code>方法来设置一个对象，当然只需要在IE10以下的版本中使用就可以了。具体的代码如下：</p>
+<pre><code>if (!jQuery.support.cors &amp;&amp; window.XDomainRequest) {
+            var httpRegEx = /^https?:\/\//i;
+            var getOrPostRegEx = /^get|post$/i;
+            var sameSchemeRegEx = new RegExp(&apos;^&apos;+location.protocol, &apos;i&apos;);
+            var xmlRegEx = /\/xml/i;
+
+            // ajaxTransport exists in jQuery 1.5+
+            jQuery.ajaxTransport(&apos;text html xml json&apos;, function(options, userOptions, jqXHR){
+                // XDomainRequests must be: asynchronous, GET or POST methods, HTTP or HTTPS protocol, and same scheme as calling page
+                if (options.crossDomain &amp;&amp; options.async &amp;&amp; getOrPostRegEx.test(options.type) &amp;&amp; httpRegEx.test(userOptions.url) &amp;&amp; sameSchemeRegEx.test(userOptions.url)) {
+                    var xdr = null;
+                    var userType = (userOptions.dataType||&apos;&apos;).toLowerCase();
+                    return {
+                        send: function(headers, complete){
+                            xdr = new XDomainRequest();
+                            if (/^\d+$/.test(userOptions.timeout)) {
+                                xdr.timeout = userOptions.timeout;
+                            }
+                            xdr.ontimeout = function(){
+                                complete(500, &apos;timeout&apos;);
+                            };
+                            xdr.onload = function(){
+                                var allResponseHeaders = &apos;Content-Length: &apos; + xdr.responseText.length + &apos;\r\nContent-Type: &apos; + xdr.contentType;
+                                var status = {
+                                    code: 200,
+                                    message: &apos;success&apos;
+                                };
+                                var responses = {
+                                    text: xdr.responseText
+                                };
+
+                                try {
+                                    if (userType === &apos;json&apos;) {
+                                        try {
+                                            responses.json = JSON.parse(xdr.responseText);
+                                        } catch(e) {
+                                            status.code = 500;
+                                            status.message = &apos;parseerror&apos;;
+                                            //throw &apos;Invalid JSON: &apos; + xdr.responseText;
+                                        }
+                                    } else if ((userType === &apos;xml&apos;) || ((userType !== &apos;text&apos;) &amp;&amp; xmlRegEx.test(xdr.contentType))) {
+                                        var doc = new ActiveXObject(&apos;Microsoft.XMLDOM&apos;);
+                                        doc.async = false;
+                                        try {
+                                            doc.loadXML(xdr.responseText);
+                                        } catch(e) {
+                                            doc = undefined;
+                                        }
+                                        if (!doc || !doc.documentElement || doc.getElementsByTagName(&apos;parsererror&apos;).length) {
+                                            status.code = 500;
+                                            status.message = &apos;parseerror&apos;;
+                                            throw &apos;Invalid XML: &apos; + xdr.responseText;
+                                        }
+                                        responses.xml = doc;
+                                    }
+                                } catch(parseMessage) {
+                                    throw parseMessage;
+                                } finally {
+                                    complete(status.code, status.message, responses, allResponseHeaders);
+                                }
+                            };
+                            xdr.onerror = function(){
+                                complete(500, &apos;error&apos;, {
+                                    text: xdr.responseText
+                                });
+                            };
+                            xdr.open(options.type, options.url);
+                            //xdr.send(userOptions.data);
+                            xdr.send();
+                        },
+                        abort: function(){
+                            if (xdr) {
+                                xdr.abort();
+                            }
+                        }
+                    };
+                }
+            });
+        };
+        jQuery.support.cors = true;
+        $.ajax({
+            crossDomain: true,
+            url : &apos;http://127.0.0.1:8080/fm/json&apos;,
+            type : &apos;GET&apos;,
+            dataType : &apos;json&apos;,
+        }).done(successHandler)
+        .fail(function() {
+            console.log(&apos;error&apos;);
+        });
+</code></pre><p>上面的代码看不是很清楚的话，有某个大神在JSFiddle中的demo,见花献佛了。<em><a href="http://jsfiddle.net/bjW8t/4/" target="_blank" rel="external">想看DEMO请猛击这里</a></em>。</p>
+<p>再次刷IE，成功执行。 </p>
+<p>随便再说下，在搜索这问题的时候，也有很多告诉说添加这一句<code>jQuery.support.cors = true;</code>就好了， 可添加了这句后，<code>no transport</code>的错是没了，但会报其他的错。然后就没然后了。</p>
+<p>所以希望碰到这类问题的童鞋能看到这篇，也希望能对你有实质性的帮助。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在小的项目中，估计永远都不会碰到跨域请求的问题。始终都是在一个域下面，可能连静态和动态都是在一起。</p>
+<p>但是一个大项目，会将里面的业务拆分成多个子项目，根据业务的不同，子项目都会有它自己的子域。 所以在主项目中，访问不同业务下的接口，将会发生跨域的问题。</p>
+]]>
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.devsai.com/tags/JavaScript/"/>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[css之内容居中显示内容]]></title>
+    <link href="http://blog.devsai.com/2015/06/15/css%E4%B9%8B%E5%86%85%E5%AE%B9%E5%B1%85%E4%B8%AD%E6%98%BE%E7%A4%BA%E5%86%85%E5%AE%B9/"/>
+    <id>http://blog.devsai.com/2015/06/15/css之内容居中显示内容/</id>
+    <published>2015-06-15T08:36:59.000Z</published>
+    <updated>2016-02-06T01:19:35.000Z</updated>
+    <content type="html"><![CDATA[<p>之前一直知道想要居中显示元素  就需要如下样式</p>
+<pre><code>margin:0 auto;
+</code></pre><p>但实际用起来 总不那么顺心，经常性的，有时有效果 ，有时又没效果了。</p>
+<p>总结一句话，我的css弱爆了。 </p>
+<p>为此请教了公司css专家 ，经过仔细的讲述后，学会了两种可居中的方法</p>
+<ul>
+<li><p>就像我前面提到的一样<code>margin:0 auto;</code>  确实可以居中 。</p>
+<p>但是，是有条件的， 需要居中的元素必须是设定了宽了的，而且不能是百分比，否则就没看不出效果。</p>
+</li>
+<li><p>还有种方式就是<code>text-align:center;</code>  之前我一直以为这属性只能用作文本的居中，其实它也能作为元素的居中，</p>
+<p>但也有个要注意的地方，居中的元素不能是块级元素，只能是行内元素。  </p>
+<p>如果想让一个块级元素使用这种的居中方式，那么就必须让其变成行内元素。</p>
+<p>可以通过设置CSS  <code>display</code>属性，设置为<code>inline</code> 或者<code>inline-block</code> 使元素变为行内元素。</p>
+</li>
+</ul>
+<p>下面通过几个例子来看看上所述两种方法的效果:</p>
+<p></p><p data-height="268" data-theme-id="0" data-slug-hash="gapQvr" data-default-tab="result" data-user="huangxiangsai" class="codepen">See the Pen <a href="http://codepen.io/huangxiangsai/pen/gapQvr/" target="_blank" rel="external">gapQvr</a> by 黄向赛 (<a href="http://codepen.io/huangxiangsai" target="_blank" rel="external">@huangxiangsai</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
+<script async src="http://assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>上面这个例子，就同时用到了两种元素居中方式。外层使用了margin的居中，里面层使用了text-align的方式居中。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前一直知道想要居中显示元素  就需要如下样式</p>
+<pre><code>margin:0 auto;
+</code></pre><p>但实际用起来 总不那么顺心，经常性的，有时有效果 ，有时又没效果了。</p>
+<p>总结一句话，我的css弱爆了。 </p>
+<p>为]]>
+    </summary>
+    
+      <category term="css" scheme="http://blog.devsai.com/tags/css/"/>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[liunx修改时区]]></title>
+    <link href="http://blog.devsai.com/2015/05/25/liunx%E4%BF%AE%E6%94%B9%E6%97%B6%E5%8C%BA/"/>
+    <id>http://blog.devsai.com/2015/05/25/liunx修改时区/</id>
+    <published>2015-05-25T08:36:59.000Z</published>
+    <updated>2016-02-06T01:18:06.000Z</updated>
+    <content type="html"><![CDATA[<p>如果你用的是去服务器，并且服务器还不再国内，那么就可能出现服务器上时区或时间不对的情况。</p>
+<p>为此，我们需要做如下的修改：</p>
+<ol>
+<li>调整时区：</li>
+</ol>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp <span class="regexp">/usr/</span>share<span class="regexp">/zoneinfo/</span>Asia<span class="regexp">/Shanghai /</span>etc<span class="regexp">/localtime</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改系统时间</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntpdate us<span class="class">.pool</span><span class="class">.ntp</span><span class="class">.org</span></span><br></pre></td></tr></table></figure>
+<p>没有安装ntpdate的需要先安装。</p>
+<p>再次查看时间  command <code>date</code>，就发现时间已经正确了。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>如果你用的是去服务器，并且服务器还不再国内，那么就可能出现服务器上时区或时间不对的情况。</p>
+<p>为此，我们需要做如下的修改：</p>
+<ol>
+<li>调整时区：</li>
+</ol>
+<figure class="highlight gradle"><table>]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[liunx环境压缩]]></title>
+    <link href="http://blog.devsai.com/2015/05/25/liunx%E7%8E%AF%E5%A2%83%E5%8E%8B%E7%BC%A9/"/>
+    <id>http://blog.devsai.com/2015/05/25/liunx环境压缩/</id>
+    <published>2015-05-25T08:36:59.000Z</published>
+    <updated>2016-02-06T01:17:12.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="u666E_u901A_u538B_u7F29"><a href="#u666E_u901A_u538B_u7F29" class="headerlink" title="普通压缩"></a>普通压缩</h2><hr>
+<p>在liunx环境中最常用的压缩应该就是<code>tar</code>。 所以只对<code>tar</code>做下记录。当然还有很多的压缩方式可用。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf filename<span class="class">.tar</span><span class="class">.gz</span> filename ...</span><br></pre></td></tr></table></figure></p>
+<p>解压<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf filename<span class="class">.tar</span><span class="class">.gz</span>  path</span><br></pre></td></tr></table></figure></p>
+<h2 id="u52A0_u5BC6_u538B_u7F29"><a href="#u52A0_u5BC6_u538B_u7F29" class="headerlink" title="加密压缩"></a>加密压缩</h2><hr>
+<p>我是很注重隐私的，所以有时候，对一些文件压缩的同时，还需要加密。+_+</p>
+<p>压缩加密<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zcf  - filename |<span class="string">openssl des3 -salt -k password </span>|<span class="string"> dd of=filename.des3</span></span><br></pre></td></tr></table></figure></p>
+<p>此命令对filename文件进行加码压缩 生成filename.des3加密压缩文件， password 为加密的密码</p>
+<p>解压解密<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=filename.des3 |openssl des3 <span class="operator">-d</span> -k password | tar zxf -</span><br></pre></td></tr></table></figure></p>
+<p>注意命令最后面的“-”  它将释放所有文件， -k password 可以没有，没有时在解压时会提示输入密码</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="u666E_u901A_u538B_u7F29"><a href="#u666E_u901A_u538B_u7F29" class="headerlink" title="普通压缩"></a>普通压缩</h2><hr>
+<p>在liunx环境中最常用的压缩应该就是]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[检测浏览器支持html5特性]]></title>
+    <link href="http://blog.devsai.com/2015/04/25/%E6%A3%80%E6%B5%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E6%94%AF%E6%8C%81html5%E7%89%B9%E6%80%A7/"/>
+    <id>http://blog.devsai.com/2015/04/25/检测浏览器支持html5特性/</id>
+    <published>2015-04-25T08:36:59.000Z</published>
+    <updated>2016-02-05T10:08:23.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>因为html5是各种新特性的集合，所以如果我们只说某个旧浏览器支持或不支持HTML5。 这个说没有任何意义，存在一定的误解，<br>应该是某个旧浏览器是否支持HTML5的某些特性，例如：canvas、audio、web worker…等等。</p>
+<h2 id="u68C0_u6D4BHTML5_u7279_u6027_u7684_u51E0_u79CD_u65B9_u5F0F"><a href="#u68C0_u6D4BHTML5_u7279_u6027_u7684_u51E0_u79CD_u65B9_u5F0F" class="headerlink" title="检测HTML5特性的几种方式"></a>检测HTML5特性的几种方式</h2><ul>
+<li><p>判断在全局的对象（例如：window）中是否存在某属性  </p>
+<p>(例如：Worker , FileReader , DataView , Blob ….)</p>
+</li>
+<li><p>创建某个元素，判断该元素是否存在某属性 </p>
+<p>(例如 ： <code>var el = document.createElement(&quot;canvas&quot;); if(el.getContext){}</code>)</p>
+</li>
+<li>创建某个元素，判断该元素的方法是否存在，并且调用它检查它的返回值。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">supports_h264_baseline_video</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (!supports_video()) &#123; <span class="keyword">return</span> <span class="literal">false</span>; &#125;</span><br><span class="line">     <span class="keyword">var</span> v = <span class="built_in">document</span>.createElement(<span class="string">"video"</span>);</span><br><span class="line">     <span class="keyword">return</span> v.canPlayType(<span class="string">'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!supprots_h264_baseline_video())&#123;<span class="keyword">return</span> <span class="literal">false</span>;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>创建某个元素，设置某个属性的值，判断是否支持这个属性的值</p>
+<p> 例如 ： input元素<br> 默认创建出来的input, type属性是’text’ ,我们知道的type 还有 输入密码的<code>&lt;input type=&quot;password&quot;&gt;</code>、完成表单提交的<code>&lt;input type=&quot;submit&quot;&gt;</code>。 但在HTML5中又提供了很多其他的type。</p>
+<p>这里， 我们就可以使用 设置input的type属性，来判断当前浏览器是否支持HTML5的type。</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkInputColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> myinput = <span class="built_in">document</span>.createElement(<span class="string">"input"</span>);</span><br><span class="line">   myinput,setAttribute(<span class="string">"type"</span>,<span class="string">"color"</span>);</span><br><span class="line">   <span class="keyword">return</span> myinput.type !=<span class="string">"text"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!checkInputColor())&#123;<span class="keyword">return</span> <span class="literal">false</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>最后 ，如果你对上面这几种的检测方式都不感兴趣。你可以使用 <a href="http://www.modernizr.com/" target="_blank">modernizr</a> 一个用来检测HTML5、CSS3的js库。</p>
+<p>例如：你想知道你用的浏览器是否支持canvas API ，你就可以这样：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">if</span> (Modernizr.canvas) &#123;</span><br><span class="line">    <span class="comment">// let's draw some shapes!</span></span><br><span class="line">&#125; <span class="tag">else</span> &#123;</span><br><span class="line">    <span class="comment">// no native canvas support available :(</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本文参考：<a href="http://www.amazon.cn/gp/product/0596806027/ref=as_li_tf_tl?ie=UTF8&camp=536&creative=3200&creativeASIN=0596806027&linkCode=as2&tag=devsai05-23" target="_blank">《HTML5: Up and Running》</a><img src="http://ir-cn.amazon-adsystem.com/e/ir?t=devsai05-23&l=as2&o=28&a=0596806027" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>因为html5是各种新特性的集合，所以如果我们只说某个旧浏览器支持或不支持HTML5。 这个说没有任何意]]>
+    </summary>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[liunx之vim使用]]></title>
+    <link href="http://blog.devsai.com/2014/11/25/liunx-use-vim/"/>
+    <id>http://blog.devsai.com/2014/11/25/liunx-use-vim/</id>
+    <published>2014-11-25T08:36:59.000Z</published>
+    <updated>2016-02-05T10:25:25.000Z</updated>
+    <content type="html"><![CDATA[<p>分屏多文件启动Vim</p>
+<p>使用大写的参数<strong>O</strong>来垂直分屏。<br>使用参数<strong>n</strong>来表示分几屏:<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vim</span> -<span class="literal">On</span> file1 file2 ...</span><br></pre></td></tr></table></figure></p>
+<p>使用小写的o参数来水平分屏:</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim -<span class="function_start"><span class="keyword">on</span></span> file1 file2 ...</span><br></pre></td></tr></table></figure>
+<h2 id="u5173_u95ED_u5206_u5C4F"><a href="#u5173_u95ED_u5206_u5C4F" class="headerlink" title="关闭分屏"></a>关闭分屏</h2><p>关闭当前窗口<br> <code>Ctrl+w  c</code> 或者 <code>:q</code></p>
+<p>在只有一个窗口时， <code>Ctrl+w  c</code>将不起作用 ，只能用<code>:q</code>或者<code>Ctrl+w q</code>来关闭窗口</p>
+<p>如果我们需要看同一文件的两个部分的内容， 文件又很长， 这时我们需要再打开一个相同的文件 ，我们可以使用<code>Ctrl+w s</code> 或 <code>Ctrl+w v</code>(一个是上下分屏，另一个是左右分屏)命令实现</p>
+<p>当我们已经打开一个文件后，才想到需要查看另一文件 ，我们就可以使用如下命令：</p>
+<p>垂直分屏: <code>:sp filename</code> </p>
+<p>水平分屏：<code>:vsp filename</code></p>
+<p>updating</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>分屏多文件启动Vim</p>
+<p>使用大写的参数<strong>O</strong>来垂直分屏。<br>使用参数<strong>n</strong>来表示分几屏:<br><figure class="highlight apache"><table><tr><td cla]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[liunx中查找目录下某内容的所有文件]]></title>
+    <link href="http://blog.devsai.com/2014/11/18/liunx-find-files/"/>
+    <id>http://blog.devsai.com/2014/11/18/liunx-find-files/</id>
+    <published>2014-11-18T08:36:59.000Z</published>
+    <updated>2016-02-05T10:04:04.000Z</updated>
+    <content type="html"><![CDATA[<p>中liunx中我们可以使用如下命令，可列出在指定的文件夹下，包括某字符串的文件路径</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grep</span> -lr <span class="string">'myname'</span> var<span class="regexp">/www/</span>*</span><br></pre></td></tr></table></figure>
+<p>其中<code>myname</code>是要查找的内容 , <code>var/www/*</code>是要在哪个文件夹下查找</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>中liunx中我们可以使用如下命令，可列出在指定的文件夹下，包括某字符串的文件路径</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</s]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[JavaScript精粹之函数(一)]]></title>
+    <link href="http://blog.devsai.com/2014/11/02/JavaScript%E7%B2%BE%E7%B2%B9%E4%B9%8B%E5%87%BD%E6%95%B0(%E4%B8%80)/"/>
+    <id>http://blog.devsai.com/2014/11/02/JavaScript精粹之函数(一)/</id>
+    <published>2014-11-02T08:36:59.000Z</published>
+    <updated>2016-02-06T01:15:37.000Z</updated>
+    <content type="html"><![CDATA[<p>在javascript中函数真的是神通广大的很。它除了可以作为一般的函数使用外，我们还可以当对象的方法使用，也可以像这样<code>function MyClass(){}</code>，看这名字你们应该知道这是什么了，对的，函数也可以构造成类来使用。对于不同的声明方式，函数的调用也是不一样的。</p>
+<h1 id="u51FD_u6570_u7684_u5F62_u5F0F"><a href="#u51FD_u6570_u7684_u5F62_u5F0F" class="headerlink" title="函数的形式"></a>函数的形式</h1><p>函数有下面几种声明方式：</p>
+<ul>
+<li>直接声明 <blockquote>
+<p>例如 ：function add(a,b){….}</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>变量声明</p>
+<blockquote>
+<p>例如 ：var add = function(a,b){…}</p>
+</blockquote>
+</li>
+<li><p>对象方法声明</p>
+<blockquote>
+<p>例如 ：<br>var obj = {</p>
+<pre><code>add:function(a,b){...}
+</code></pre><p>}</p>
+</blockquote>
+</li>
+<li><p>类声明</p>
+<blockquote>
+<p>例如 ： function Add(a,b){…}  </p>
+</blockquote>
+</li>
+</ul>
+<h1 id="u51FD_u6570_u7684_u8C03_u7528_u6A21_u5F0F"><a href="#u51FD_u6570_u7684_u8C03_u7528_u6A21_u5F0F" class="headerlink" title="函数的调用模式"></a>函数的调用模式</h1><ul>
+<li><p>作为对象方法调用(The Method Invocation Pattern)</p>
+<p>通常我们会上述的<strong>对象方法声明</strong>来创建一个对象，然后我们就可以这样来调用对象的方法了：</p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">		</span></span><br><span class="line">obj.add(1,2);</span><br><span class="line">//或者</span><br><span class="line">obj[<span class="link_label">add</span>](<span class="link_url">1,2</span>);</span><br></pre></td></tr></table></figure>
+<p>这里的函数绑定在了对象上，函数成了对象的属性，这种作为对象的属性来调用，我们一般就叫作方法调用。此时，函数中<code>this</code>指的就是对象本身。我们经常看到的链式调用<code>myInfo.setName(&quot;xiao&quot;).setAge(33).setWeigth(65)</code>就是通过返回<code>this</code>来实现的。</p>
+<p>例如:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> myInfo = &#123;</span><br><span class="line">	setName:<span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(name);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;,</span><br><span class="line">	setAge:<span class="function"><span class="keyword">function</span>(<span class="params">age</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(age);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;,</span><br><span class="line">	setWeight:<span class="function"><span class="keyword">function</span>(<span class="params">weight</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(weight);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//invoke :</span></span><br><span class="line">myInfo.setName(<span class="string">"sai"</span>).setAge(<span class="number">27</span>).setWeight(<span class="number">65</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一般函数调用(The Function Invocation Pattern)</li>
+</ul>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var <span class="sub"><span class="keyword">sub</span> = add(1,2);</span></span><br></pre></td></tr></table></figure>
+<p>这种形式的函数是绑定在全局对象上。我们应该知道在函数内部使用的变量，除了声明函数是定义的参数变量或使用<code>var</code>声明的变量外，都是全局变量（也是全局对象的属性）。比如：有个全局变量<code>a</code>有函数内部使用，我们可以直接使用它<code>a</code>或者作为全局对象的属性使用：<code>this.a</code>。</p>
+<p>函数体内的变量有这样的特点，比如：在函数体内有变量<code>name</code>，如果该变量是在函数体内声明的（也就是用<code>var</code>或作为形参）那么<code>name</code>就是函数体内声明的变量，如果没有在函数体内声明，会自动的访问全局变量<code>name</code>。又如果在函数体内已经声明的变量<code>name</code>，但还是想使用全局的变量<code>name</code>，那么就需要这样使用<code>this.name</code>，在这种形式调用的函数体内this指的就是全局对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"huang"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myInfo1</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"part varibale name: "</span>+name);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"global varibale name: "</span>+<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line">myInfo1(<span class="string">"sai"</span>);	</span><br><span class="line"><span class="comment">// print out : </span></span><br><span class="line"><span class="comment">//	part varibale name: sai</span></span><br><span class="line"><span class="comment">//	global varibale name: huang</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myInfo2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="string">"sai"</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"part varibale name: "</span>+name);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"global varibale name: "</span>+<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line">myInfo2();</span><br><span class="line"><span class="comment">// print out : </span></span><br><span class="line"><span class="comment">//	part varibale name: sai</span></span><br><span class="line"><span class="comment">//	global varibale name: huang</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myInfo3</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"part varibale name: "</span>+name);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"global varibale name: "</span>+<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line">myInfo3();</span><br><span class="line"><span class="comment">// print out : </span></span><br><span class="line"><span class="comment">//	part varibale name: huang</span></span><br><span class="line"><span class="comment">//	global varibale name: huang</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>作为构造函数调用(The Constructor Invocation Pattern)</p>
+<p>这种形式，可以看成是java中的类对象，通过new 来构建类对象的实例。<br>javascript可以把函数当作对象使用。所以在javascript声明一个类对象和声明函数是一样的。<br>区别在于：我们如果要把函数当作类对象使用，那我们一般在定义函数名称的时候会使首字母大写。</p>
+</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span></span> MyInfo(<span class="keyword">name</span>)&#123;</span><br><span class="line">	this.<span class="keyword">name</span> = <span class="keyword">name</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们可以像添加对象的属性一样，来给我们创建的类添加公共的属性或方法。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyInfo.prototype.getName = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用new来实现化一个类对象：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var <span class="keyword">my</span> = new MyInfo(<span class="string">"sai"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">my</span>.getName(); <span class="regexp">//</span> <span class="keyword">print</span> out : sai</span><br><span class="line"><span class="keyword">my</span>.name;	  <span class="regexp">//</span> <span class="keyword">print</span> out : sai</span><br></pre></td></tr></table></figure>
+<p><code>my.name</code>是不是觉得和使用javascript中的一般的对象是一样的啊。所以说，在javascript除了几种基本的类型外，其他都是对象。其实javascript中已经内置了几个这种形式的类对象。比如：<code>new Date()</code>、<code>new Array()</code>、<code>new String()</code>等等。 </p>
+<ul>
+<li><p>指定对象方法调用(The Apply Invocation Pattern)</p>
+<p>javascript中函数是可以有方法的，这个在前面的介绍中我们应该就知道了。 这里要说的是其中的一个方法，名叫<code>apply</code>，它的主要作用就是让函数能在其他的对象使用。<br>该方法需要两个参数，第一个参数做为我们要调用的函数的宿主（即需要的对象）,第二个参数是调用<br>函数时所须的参数（以数组的形式）。</p>
+</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> otherPeople</span> = &#123;</span><br><span class="line">	name : <span class="string">"other"</span></span><br><span class="line">&#125;</span><br><span class="line">myInfo1.apply(otherPeople,<span class="string">"xiao bao"</span>);</span><br><span class="line"><span class="comment">// print out :</span></span><br><span class="line"><span class="comment">//	part varibale name: xiao bao</span></span><br><span class="line"><span class="comment">//	global varibale name: other</span></span><br></pre></td></tr></table></figure>
+<p>此时，myInfo1声明中使用的<em>this</em>指的就不是<strong>全局对象</strong>了，而是<strong>otherPeople</strong>。</p>
+<p>说到<code>apply</code>当然要提一下<code>call</code>，它的作用和<code>apply</code>是一样的。但call除了第一个参数是宿主对象外，后面的参数个数不限且这些参数会作为被调用的函数的参数使用。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[在javascript中函数真的是神通广大的很。它除了可以作为一般的函数使用外，我们还可以当对象的方法使用，也可以像这样`function MyClass(){}`，看这名字你们应该知道这是什么了，对的，函数也可以构造成类来使用。对于不同的声明方式，函数的调用也是不一样的。]]>
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.devsai.com/tags/JavaScript/"/>
+    
+      <category term="前端" scheme="http://blog.devsai.com/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[用shell脚本发布系统]]></title>
+    <link href="http://blog.devsai.com/2014/10/15/shell-deploysystem/"/>
+    <id>http://blog.devsai.com/2014/10/15/shell-deploysystem/</id>
+    <published>2014-10-15T08:36:59.000Z</published>
+    <updated>2016-02-05T10:24:08.000Z</updated>
+    <content type="html"><![CDATA[<p>脚本是给懒人准备的，越懒的人越需要脚本,我就是那个传说中的懒人,这样别人在死命搞代码的时候，我就可以喝喝茶，看看书了。→_→</p>
+<h1 id="u7528_u9014"><a href="#u7528_u9014" class="headerlink" title="用途"></a>用途</h1><p>做了项目总要发布吧。一个项目也不会就发布一次，发布上去后给用户测试，发现了这儿那儿的问题，然后就没日没夜的改（这要有多少BUG啊），改完后，重新在发布上去，告诉用户一声BUG改了，用户说：嗯。很好很好。过了个几天，用户又开始说，这个不好，改改。   好吧。改吧！！ 改完后再发布到服务器 。 这一来一去的，发布好麻烦啊。每次都要做以下几件事：</p>
+<ul>
+<li>上传项目到服务器</li>
+<li>停止服务</li>
+<li>查看服务是否正常停止，没有正常停止还需要手动杀进程</li>
+<li>备份当前的系统版本</li>
+<li>拷贝刚上传上去的项目到指定目录</li>
+<li>重新启动服务</li>
+<li>重启后还有看下控制台确保正常启动了</li>
+</ul>
+<p>看吧。 每次重新发布都要这样做，烦不烦啊。<br>如果只需要一步两步就搞定，那应该是多么爽的一件事啊。</p>
+<p>于是乎，嘿嘿， 有下接下来的代码。。。</p>
+<h1 id="u4EE3_u7801"><a href="#u4EE3_u7801" class="headerlink" title="代码"></a>代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">#!/bin/sh</span></span><br><span class="line"> <span class="comment">#设定要拷贝的原文件名称，默认在用户的活动目录下</span></span><br><span class="line">fileName=<span class="string">'/root/assessment.war'</span></span><br><span class="line"><span class="comment">#默认超时时间设置为30秒</span></span><br><span class="line">overtime=<span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ge <span class="number">1</span> ]; <span class="keyword">then</span></span><br><span class="line">	fileName=<span class="variable">$1</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ge <span class="number">2</span> ]; <span class="keyword">then</span></span><br><span class="line">	overtime=<span class="variable">$2</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#fileName='/root/install.log'</span></span><br><span class="line"><span class="comment">#判断文件是否存在</span></span><br><span class="line"><span class="keyword">if</span> [ ! <span class="operator">-f</span> <span class="string">"<span class="variable">$fileName</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"文件：<span class="variable">$fileName</span> 不存在，请先上传<span class="variable">$fileName</span>..."</span></span><br><span class="line"><span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [  -z <span class="variable">$TOMCAT_HOME</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"TOMCAT_HOME环境变量不存在，请先设置tomcat环境变量..."</span></span><br><span class="line"><span class="built_in">exit</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#获得当前tomcat的进程数</span></span><br><span class="line">psid=`ps -ef|grep <span class="string">"tomcat"</span>|grep -v <span class="string">"grep"</span>|wc <span class="operator">-l</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$psid</span> -ge <span class="number">1</span> ]; <span class="keyword">then</span></span><br><span class="line"> <span class="variable">$TOMCAT_HOME</span>/bin/./shutdown.sh</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"正在停止服务,请稍等......"</span></span><br><span class="line">	<span class="comment">#用循环判断服务是否已经停止，设置了60秒超时 </span></span><br><span class="line">	count=<span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> [ <span class="variable">$count</span> <span class="operator">-lt</span> <span class="variable">$overtime</span> ]</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">		psid=`ps -ef|grep <span class="string">"tomcat"</span>|grep -v <span class="string">"grep"</span>|wc <span class="operator">-l</span>`</span><br><span class="line">		<span class="keyword">if</span> [ <span class="variable">$psid</span> -ge <span class="number">1</span> ]; <span class="keyword">then</span></span><br><span class="line">  		     	<span class="built_in">let</span> count++</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">let</span> <span class="string">"count = <span class="variable">$overtime</span> + 1"</span></span><br><span class="line">			<span class="built_in">break</span></span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">		 sleep <span class="number">1</span>	</span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line"><span class="comment">#如果count 60 表示超时 , 61 表示服务已停止</span></span><br><span class="line">	<span class="keyword">if</span> [ <span class="variable">$count</span> <span class="operator">-eq</span> <span class="variable">$overtime</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"无法停止服务，正在使用kill -9 命令强行杀死进程"</span></span><br><span class="line">		psid=`ps -ef | grep tomcat/ | grep -v grep | awk <span class="string">'&#123;print $2&#125;'</span>`</span><br><span class="line">		<span class="built_in">kill</span> -<span class="number">9</span> <span class="variable">$psid</span>	</span><br><span class="line"><span class="comment">#        	exit 0</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"tomcat服务已停止"</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"开始备份webapps下ROOT.war ......"</span></span><br><span class="line"><span class="keyword">if</span> [  <span class="operator">-e</span> <span class="string">"<span class="variable">$TOMCAT_HOME</span>/webapps/ROOT.war"</span> ]; <span class="keyword">then</span></span><br><span class="line">  mv <span class="variable">$TOMCAT_HOME</span>/webapps/ROOT.war <span class="variable">$TOMCAT_HOME</span>/webapps/ROOT.war.bak</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"删除webapps下ROOT ......."</span></span><br><span class="line">rm -fr <span class="variable">$TOMCAT_HOME</span>/webapps/ROOT</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"拷贝新的<span class="variable">$fileName</span>进入webapps,并改名为ROOT.war "</span></span><br><span class="line"><span class="comment">#mv $fileName $TOMCAT_HOME/webapps/ROOT.war</span></span><br><span class="line">cp <span class="variable">$fileName</span> <span class="variable">$TOMCAT_HOME</span>/webapps/ROOT.war</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"完成拷贝....."</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"开始重启tomcat服务 ....."</span></span><br><span class="line"><span class="variable">$TOMCAT_HOME</span>/bin/./startup.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">tail <span class="operator">-f</span> <span class="variable">$TOMCAT_HOME</span>/logs/catalina.out</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h1 id="u4F7F_u7528"><a href="#u4F7F_u7528" class="headerlink" title="使用"></a>使用</h1><p>有了这脚本，你重新发布项目，只需如下几步：</p>
+<ul>
+<li>远程连接到liunx服务器，就在用户目录下上传项目包</li>
+<li>执行该脚本 比如脚本名叫autoPublish.sh , <code>./autoPublish.sh ~/projectName</code></li>
+</ul>
+<p>后面跟的第一个参数是上传上去的项目名称 ，第二个参数为停止项服务超时时间（可以不管）。<br>如果不想每次都输入第一个参数 ，手动改下脚本的默认项目地址就行。</p>
+<p>只需要两步，搞定发布，是不是感觉舒服了。</p>
+<p>嘿嘿。  还不赶紧，试着发个项目上去呗。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>脚本是给懒人准备的，越懒的人越需要脚本,我就是那个传说中的懒人,这样别人在死命搞代码的时候，我就可以喝喝茶，看看书了。→_→</p>
+<h1 id="u7528_u9014"><a href="#u7528_u9014" class="headerlink" title="]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+      <category term="shell" scheme="http://blog.devsai.com/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[RedHat上静默安装Oracle11g]]></title>
+    <link href="http://blog.devsai.com/2014/10/05/readhat-install-oracle/"/>
+    <id>http://blog.devsai.com/2014/10/05/readhat-install-oracle/</id>
+    <published>2014-10-05T08:36:59.000Z</published>
+    <updated>2016-02-05T10:21:44.000Z</updated>
+    <content type="html"><![CDATA[<p>去年的十月前后，公司为某某大学后勤部门开发了一套干部考核系统，我也参与了开发。后来公司用此作为案例，接到了一些其他学校的考核系统的开发项目。原来系统是用mysql作为数据库，如今接到的一所学校的考核系统，要求用oracle数据库。所以公司要求我来为客户那边安装oracle数据库。之前我对mysql的安装有所了解，而对liunx上oracle安装从来没接触过。通过两天的不断的找资料后，最终安装成功，其中也多亏了同事的指点，让安装变得顺利许多。</p>
+<p>在此，我写下此文，希望对大家有所帮助。</p>
+<h2 id="Oracle_u5B89_u88C5_u524D_uFF0C_u4F9D_u8D56_u5305_u7684_u68C0_u6D4B"><a href="#Oracle_u5B89_u88C5_u524D_uFF0C_u4F9D_u8D56_u5305_u7684_u68C0_u6D4B" class="headerlink" title="Oracle安装前，依赖包的检测"></a>Oracle安装前，依赖包的检测</h2><p>这个就不用多说什么了，直接的上代码：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">rpm</span> <span class="literal">-</span><span class="comment">q</span> <span class="comment">binutils	compat</span><span class="literal">-</span><span class="comment">libstdc</span><span class="literal">+</span><span class="literal">+</span><span class="literal">-</span><span class="comment">33</span> <span class="comment">elfutils</span><span class="literal">-</span><span class="comment">libelf</span> <span class="comment">elfutils</span><span class="literal">-</span><span class="comment">libelf</span><span class="literal">-</span><span class="comment">devel</span> <span class="comment">\</span></span><br><span class="line"><span class="comment">	elfutils</span><span class="literal">-</span><span class="comment">libelf</span><span class="literal">-</span><span class="comment">devel</span> <span class="comment">expat</span> <span class="comment">gcc</span> <span class="comment">gcc</span><span class="literal">-</span><span class="comment">c</span><span class="literal">+</span><span class="literal">+</span> <span class="comment">glibc</span> <span class="comment">glibc</span><span class="literal">-</span><span class="comment">common</span> <span class="comment">glibc</span><span class="literal">-</span><span class="comment">devel\</span></span><br><span class="line"><span class="comment">	glibc</span><span class="literal">-</span><span class="comment">headers</span> <span class="comment">libaio</span> <span class="comment">libaio</span><span class="literal">-</span><span class="comment">devel</span> <span class="comment">libgcc</span> <span class="comment">libstdc</span><span class="literal">+</span><span class="literal">+</span> <span class="comment">libstdc</span><span class="literal">+</span><span class="literal">+</span><span class="literal">-</span><span class="comment">devel</span> <span class="comment">make\</span></span><br><span class="line"><span class="comment">	pdksh</span> <span class="comment">sysstat</span> <span class="comment">unixODBC</span> <span class="comment">unixODBC</span><span class="literal">-</span><span class="comment">devel</span> <span class="comment">|</span> <span class="comment">grep</span> <span class="comment">"not</span> <span class="comment">installed"</span></span><br></pre></td></tr></table></figure>
+<p>执行以上代码后，如果显示某个包名，说明该包没有被安装。<br>安装以上依赖包需要系统的安装盘或系统镜像。</p>
+<p>用户那边把系统的镜像文件copy到了系统根目录上，我通过mount挂载了镜像：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o <span class="keyword">loop</span> -t iso9660 <span class="regexp">/ISONAME.iso /media/cdrom/</span></span><br></pre></td></tr></table></figure>
+<p>然后在<code>/media/cdrom</code>里面就有相应的依赖包，我是在里面的Server目录下面<br>找到了所有的依赖包。</p>
+<p>安装依赖需要执行以下命令：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh <span class="tag">&lt;<span class="title">依赖包名</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>安装依赖包是个麻烦的过程，我是一个个安装的，而且在安装某个包的时候有时会提示你先安装其他的包，非常的麻烦。不知道有没有什么简单方便的方式进行操作。如果有谁有更好的方法，希望能评论告诉<br>我。</p>
+<h2 id="u6CA1_u6709_u56FE_u5F62_uFF0C_u5C31_u9759_u9ED8_u5427"><a href="#u6CA1_u6709_u56FE_u5F62_uFF0C_u5C31_u9759_u9ED8_u5427" class="headerlink" title="没有图形，就静默吧"></a>没有图形，就静默吧</h2><h3 id="u4E0D_u7BA1_u56FE_u5F62_u8FD8_u662F_u9759_u9ED8_u90FD_u9700_u8981_u505A_u7684_u4E8B"><a href="#u4E0D_u7BA1_u56FE_u5F62_u8FD8_u662F_u9759_u9ED8_u90FD_u9700_u8981_u505A_u7684_u4E8B" class="headerlink" title="不管图形还是静默都需要做的事"></a>不管图形还是静默都需要做的事</h3><ul>
+<li>创建群组</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">groupadd</span> oinstall </span><br><span class="line">groupadd dba</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建oracle用户并使用其属于刚创建的群组</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd –<span class="keyword">m</span> –<span class="keyword">g</span> oinstall –<span class="keyword">G</span> dba oracle</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>检查oracle是否属于组oinstall 和 dba</p>
+<p>   id oracle</p>
+<p>正确的显示：uid=1001(oracle) gid=1000(oinstall) groups=1001(dba)</p>
+</li>
+<li><p>给oracle设置密码</p>
+<p>   passwd oracle</p>
+</li>
+<li><p>创建安装oracle的目录并赋相应的权限</p>
+</li>
+</ul>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mkdir</span> -p /u01/oracle</span><br><span class="line"><span class="keyword">chown</span> -R oracle:oinstall /u01</span><br><span class="line"><span class="keyword">chmod</span> -R <span class="number">775</span> /u01</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>内核参数的配置（网上寻找到的，这一步不是很明白其作用），使用<code>vi</code>或<code>vim</code>(其他编辑器也行)修改 <code>/ect/sysctl.conf</code>文件，一般都有，没有就创建一个，对它做如下的修改或添加：</p>
+<p>   fs.file-max = 6815744</p>
+<p>   fs.aio-max-nr = 1048576</p>
+<p>   kernel.shmall = 2097152</p>
+<p>   kernel.shmmax = 2147483648</p>
+<p>   kernel.shmmni = 4096</p>
+<p>   kernel.sem = 250 32000 100 128</p>
+<p>   net.ipv4.ip_local_port_range = 9000 65500</p>
+<p>   net.core.rmem_default = 4194304</p>
+<p>   net.core.rmem_max = 4194304</p>
+<p>   net.core.wmem_default = 262144</p>
+<p>   net.core.wmem_max = 1048576</p>
+<p>输入命令:<code>sysctl -p</code>使其立即生效        </p>
+</li>
+<li><p>配置oracle用户的环境变量</p>
+<p>切换到oracle用户下：<code>su -l oracle</code>,然后输入：<code>vim ~/.bash_profile</code>，在其中添加如下环境变量</p>
+   <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export <span class="constant">ORACLE_HOME</span>=<span class="regexp">/u01/oracle</span><span class="regexp">/product/</span><span class="number">11.2</span>/db_1</span><br><span class="line">export <span class="constant">ORACLE_BASE</span>=<span class="regexp">/u01/oracle</span> </span><br><span class="line">export <span class="constant">ORACLE_SID</span>=orcl</span><br><span class="line">export <span class="constant">LD_LIBRARY_PATH</span>=<span class="variable">$ORACLE_HOME</span>/<span class="class"><span class="keyword">lib</span>:/<span class="title">lib</span>:/<span class="title">usr</span>/<span class="title">lib</span>:/<span class="title">usr</span>/<span class="title">local</span>/<span class="title">lib</span></span></span><br></pre></td></tr></table></figure>
+<p><code>source ~/.bash_profile</code>使其立即生效</p>
+</li>
+</ul>
+<h2 id="Oracle_u7684_u4E0B_u8F7D_uFF0C_u89E3_u538B_uFF0C_u5B89_u88C5"><a href="#Oracle_u7684_u4E0B_u8F7D_uFF0C_u89E3_u538B_uFF0C_u5B89_u88C5" class="headerlink" title="Oracle的下载，解压，安装"></a>Oracle的下载，解压，安装</h2><p>下载oracle并进行解压： 这里提供一下我使用的oracle, <a href="http://pan.baidu.com/s/12HFmI" target="_blank" rel="external">点击此处</a>下载<br>创建目录<code>mkdir /oinstall</code>,我把下载下来的oracle放到了<code>/oinstall</code>下，再通过以下命令解压：</p>
+<pre><code>unzip p10404530_112030_Linux-x86-64_1of7.zip
+unzip p10404530_112030_Linux-x86-64_2of7.zip
+</code></pre><p>由于静默（silent）安装oracle，需要配置静默响应文件，在<code>/oinstall/database/response</code>下用三个文件，其中一个文件就是用来安装使用，复制一份出来修改其内容。 这是一种方法，若不配置响应文件，则需要设置响应变量。我用了第二种方式 ,代码如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./runInstaller -silent -force \</span><br><span class="line">FROM_LOCATION=/oinstall/database/stage/products<span class="class">.xml</span> \</span><br><span class="line">oracle<span class="class">.install</span><span class="class">.option</span>=INSTALL_DB_SWONLY \</span><br><span class="line">UNIX_GROUP_NAME=oinstall \</span><br><span class="line">INVENTORY_LOCATION=/home/oracle/oraInventory \</span><br><span class="line">ORACLE_HOME=/u01/oracle/product/<span class="number">11.2</span>/db_1 \</span><br><span class="line">ORACLE_HOME_NAME=<span class="string">"OraDb11g_Home1"</span> \</span><br><span class="line">ORACLE_BASE=/u01/oracle \</span><br><span class="line">oracle<span class="class">.install</span><span class="class">.db</span><span class="class">.InstallEdition</span>=EE \</span><br><span class="line">oracle<span class="class">.install</span><span class="class">.db</span><span class="class">.isCustomInstall</span>=false \</span><br><span class="line">oracle<span class="class">.install</span><span class="class">.db</span><span class="class">.DBA_GROUP</span>=dba \</span><br><span class="line">oracle<span class="class">.install</span><span class="class">.db</span><span class="class">.OPER_GROUP</span>=dba \</span><br><span class="line">DECLINE_SECURITY_UPDATES=true</span><br></pre></td></tr></table></figure>
+<p>为了方便使用，通过<code>vim create_db.sh</code>，添加上述代码，给该文档权限修改为可执行。</p>
+<p>执行需要数分钟的时间，结束时，提示安装成功并且会给出两个文件的路径，分别执行这两个文件。</p>
+<h2 id="u9759_u9ED8_u5B89_u88C5_u76D1_u542C"><a href="#u9759_u9ED8_u5B89_u88C5_u76D1_u542C" class="headerlink" title="静默安装监听"></a>静默安装监听</h2><p>复制<code>/oinstall/database/response</code>下<code>netca.rsp</code>：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /oinstall/database/response </span><br><span class="line">cp  netca<span class="class">.rsp</span> ../myNetca<span class="class">.rsp</span></span><br><span class="line">cd ..</span><br><span class="line">vim myNetca.rsp</span><br></pre></td></tr></table></figure>
+<p><code>vim MyNetca.rsp</code>修改文件，以下为需要修改的项目：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="setting">NSTALL_TYPE=<span class="value"><span class="string">""</span>custom<span class="string">""</span> 安装的类型</span></span></span><br><span class="line"><span class="setting">LISTENER_NUMBER=<span class="value"><span class="number">1</span> 监听器数量</span></span></span><br><span class="line"><span class="setting">LISTENER_NAMES=<span class="value">&#123;<span class="string">"LISTENER"</span>&#125; 监听器的名称列表</span></span></span><br><span class="line"><span class="setting">LISTENER_PROTOCOLS=<span class="value">&#123;<span class="string">"TCP;1521"</span>&#125; 监听器使用的通讯协议列表</span></span></span><br><span class="line"><span class="setting">LISTENER_START=<span class="value"><span class="string">""</span>LISTENER<span class="string">""</span> 监听器启动的名称</span></span></span><br></pre></td></tr></table></figure>
+<p>然后运行：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ORACLE</span>_HOME/bin/netca /silent /responsefile /oinstall/database/response/myNetca.rsp</span><br></pre></td></tr></table></figure>
+<p><img src="/images/netca.png" alt="运行结束"></p>
+<h2 id="u521B_u5EFAoracle_u5B9E_u4F8B_u5E93"><a href="#u521B_u5EFAoracle_u5B9E_u4F8B_u5E93" class="headerlink" title="创建oracle实例库"></a>创建oracle实例库</h2><p>复制<code>/oinstall/database/response</code>下<code>dbca.rsp</code>：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /oinstall/database/response</span><br><span class="line">cp dbca<span class="class">.rsp</span> ../myDbca<span class="class">.rsp</span></span><br><span class="line">cd ..</span><br><span class="line">vim myDbca.rsp</span><br></pre></td></tr></table></figure>
+<p><code>vim myDbca.rsp</code>修改文件，以下为需要修改的项目：</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># RESPONSEFILE_VERSION = "11.2.0" </span></span><br><span class="line"><span class="preprocessor"># OPERATION_TYPE = "createDatabase" </span></span><br><span class="line"><span class="preprocessor"># [CREATEDATABASE]  </span></span><br><span class="line"><span class="preprocessor"># GDBNAME = "orcl" </span></span><br><span class="line"><span class="preprocessor"># SID = "orcl" </span></span><br><span class="line"><span class="preprocessor"># TEMPLATENAME = "General_Purpose.dbc" </span></span><br><span class="line"><span class="preprocessor">#  </span></span><br><span class="line"><span class="preprocessor"># [CONFIGUREDATABASE]  </span></span><br><span class="line"><span class="preprocessor"># EMCONFIGURATION = "LOCAL" </span></span><br><span class="line"><span class="preprocessor"># SYSMANPASSWORD = "123456" </span></span><br><span class="line"><span class="preprocessor"># DBSNMPPASSWORD = "123456"</span></span><br></pre></td></tr></table></figure>
+<p>然后执行：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ORACLE</span>_HOME/bin/dbca -silent -responsefile /oinstall/database/response/dbca.rsp</span><br></pre></td></tr></table></figure>
+<p>到这里，ORACLE的安装差不多了。但我用本机访问服务器上oracle时，连接不上，出现监听超时的错误，以为是服务器上防火墙没有开放1521端口，但查看后发现1521端口已经加上了。经过几翻折腾才知道，是连接服务器的网络上1521端口未开放，问题总算解决了。</p>
+<p>问题总会一个接一个的，在向表插入数据时，发现中文存在无法识别的情况。<br>在网上找了一堆的资料，最后通过阅读<a href="http://bxffeng.blog.163.com/blog/static/90238449201042683549365/" target="_blank" rel="external">这篇博客</a>解决了问题。</p>
+<p>主要原因是：当前的系统的语言环境和环境变量，与oracle的字符集不一致。</p>
+<p>可以通过以下步骤修改</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">su</span> -<span class="keyword">l</span> oracle</span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>文件bash_profile中修改或添加以下内容：</p>
+<figure class="highlight fix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">NLS_LANG </span>=<span class="string"> AMERICAN _ AMERICA. ZHS16GBK</span></span><br></pre></td></tr></table></figure>
+<p>然后修改<code>sudo vim /etc/sysconfig/i18n</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="setting">LANG=<span class="value"><span class="string">"en_US.UTF-8"</span></span></span></span><br><span class="line"><span class="setting">SUPPORTED=<span class="value"><span class="string">"zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en"</span></span></span></span><br><span class="line"><span class="setting">SYSFONT=<span class="value"><span class="string">"latarcyrheb-sun16"</span></span></span></span><br></pre></td></tr></table></figure>
+<p>查看oracle的字符集：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sqlplus / <span class="function"><span class="keyword">as</span> sysdba</span><br><span class="line"><span class="keyword">select</span> <span class="title">userenv</span>(<span class="params"><span class="string">'language'</span></span>) <span class="keyword">from</span> dual</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h2><p>Oracle在Liunx下安装是件麻烦的事，由于是没有图形界面使用静默安装，貌似不会出错停止，还会继续安装，然后就一堆的问题，oracle没法用还得重新安装，这种情况下oracle安装后的Log是一定要看的，看看在安装过程中有什么错误信息。但也发现，oracle静默安装的速度确实是相当的快。与我在WIN上安装Oracle速度根本不是一个级别的。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>去年的十月前后，公司为某某大学后勤部门开发了一套干部考核系统，我也参与了开发。后来公司用此作为案例，接到了一些其他学校的考核系统的开发项目。原来系统是用mysql作为数据库，如今接到的一所学校的考核系统，要求用oracle数据库。所以公司要求我来为客户那边安装oracle数]]>
+    </summary>
+    
+      <category term="liunx" scheme="http://blog.devsai.com/tags/liunx/"/>
+    
+      <category term="oracle" scheme="http://blog.devsai.com/tags/oracle/"/>
+    
+  </entry>
+  
+</feed>
