@@ -4,8 +4,8 @@ tags: [HTML5,postMessage]
 date: 2016.02.17
 ---
 
-
-在HTML5之前，浏览器窗口或frames之间的信息传输因为要考虑安全因素是被限制了的。
+window.postMessage是html5的新特性之一，
+可以使用它来向其它的window对象发送消息，不管这个window对象是属于同源或不同源。
 
 通过Cross-Document Messaging允许浏览器**windows, tabs, and iFrames**之间跨域通讯。
 

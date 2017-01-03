@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: SAI的Blog
-subtitle:  一万年太久，只争朝夕。
+title: SAI的技术博客
+subtitle:  路漫漫其修远兮
 keywords: 个人，博客，个人博客，技术博客，SAI，向赛，devsai，黄向赛，前端开发，关注前端
 description: 分享技术，不断提高，不断前行，黄向赛的个人技术博客，http://www.devsai.com，关注技术，关注前端，关注后端，关注移动端
-author: xiangsai Huang 
-language: zh-CN
+author: SAI
+language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://blog.devsai.com
+url: http://www.devsai.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -31,7 +31,7 @@ skip_render:
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
-titlecase: false # Transform title into titlecase
+titlecase: true # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
@@ -69,12 +69,14 @@ pagination_dir: page
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
-theme: maupassant 
+theme: yelee
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: git@github.com:huangxiangsai/huangxiangsai.github.io.git
+  branch: master
 
 #plugin
 ### feed atom.xml

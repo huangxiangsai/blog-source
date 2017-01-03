@@ -59,7 +59,7 @@ layout: demo
 		
 		<br>
 
-		<iframe id="receiver" src="http://demos.devsai.com/postmessage/receiver.html" width="500" height="200">
+		<iframe id="receiver" src="http://demos.devsai.com/demo/postmessage/receiver.html" width="500" height="200">
 		  <p>Your browser does not support iframes.</p>
 		</iframe>
 
@@ -116,7 +116,7 @@ layout: demo
 			if(new_w && !new_w.closed){
 				send2();
 			}else{
-				new_w = window.open('http://demos.devsai.com/postmessage/receiver.html','',w_params);
+				new_w = window.open('http://demos.devsai.com/demo/postmessage/receiver.html','',w_params);
 				//等待页面加载完再发送信息
 				setTimeout(send2, 1000);
 			}
