@@ -2,6 +2,7 @@
 title: react-native开发前的见面礼--误入依赖坑
 tags : [react-native,javaScript]
 date : 2017-01-06
+description : "react-native开发，入坑第一篇，介绍了什么依赖包遇到了问题，及如何去解决它的，主要是由cnpm引起的"
 ---
 
 对前端开发的同学来说，react native开发肯定是让人兴奋，用javaScript来开发app应用，想想就激动。
