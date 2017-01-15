@@ -93,14 +93,24 @@ selection.getRangeAt(0);
 
 ### Range.startOffset
 
-返回一个数字表示Range从`startContainer`节点中的哪个位置开始。也就是说，`startOffset`位置前的内容
-虽然是`startContainer`节点中的，但并不属于`Range`
+返回一个数字表示Range开始边界，从`startContainer`节点中的哪个位置开始。也就是说，`startOffset`位置前的内容
+虽然是`startContainer`节点中的，但并不属于`Range`。
+
+当`startContainer`节点类型为`Text`,`Comment`,`CDATASection`,此时`range`的开始边界为`startContainer`中的第`Range.startOffset`个字符。
+`Range.startOffset`表示的数字为`startContainer`开始的字符数。
+
+当`startContainer`是除上述以外的类型时，此时`range`的开始边界为`startContainer`中的第`Range.startOffset`个子节点
 
 ### Range.endOffset
 
-返回的数字表示Range在`endContainer`节点中的哪个位置结束。在其位置之后的`endContainer`中的内容也不属于`Range`
+与`Range.startOffset`相对应，表示`Range`结束边界 ，同样，`Range.endOffset`返回的数字意义与`endContainer`节点的类型有关。
 
-需要注意的是当`Range.collapsed : true `时， `commonAncestorContainer,startContainer,endContainer`这三个属性返回的是同一个`Node`
+`endContainer`节点类型为`Text`,`Comment`,`CDATASection`,此时`range`的结束边界为`endContainer`中的第`Range.endOffset`个字符。
+
+`endContainer`为其他类型时，`range`的结束边界为`endContainer`中的第`Range.endOffset`个子节点。
+
+
+需要注意的是当`Range.collapsed : true `时， `commonAncestorContainer,startContainer,endContainer`这三个属性返回的是同一个`Node`，此时`startOffset`与`endOffset`值也相等
 
 
 
@@ -110,8 +120,24 @@ selection.getRangeAt(0);
 >	`Range`的大多数方法其实都是对以上的6种只读属性间接的赋值。
 
 
+### range.setStart(startNode, startOffset);
+
+设置range的开始位置，两个参数都必须设置，设置完以后，`range.startContainer`就等于`startNode`,`range.startOffset`就等于`startOffset`。
+
+该方法有兼容性问题，IE9+才可用。
+
+### range.setEnd(endNode,endOffset)
+
+与上方法雷同，不再多说了。同样该方法有兼容性问题，IE9+才可用。
 
 
+### range.setStartBefore(referenceNode);
+
+通过该方法设置后，`range.startContainer`为参数`referenceNode`的父节点，`range.startOffset`为其父节点中的`referenceNode`子节点位置
+
+### range.setStartAfter(referenceNode);
+
+通过该方法设置后，`range.startContainer`为参数`referenceNode`的父节点，与`range.setStartBefore(referenceNode)`方法一样，不同的是`range.startOffset`为其父节点中的`referenceNode`子节点之后一个节点位置
 
 
 
