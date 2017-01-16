@@ -110,7 +110,7 @@ selection.getRangeAt(0);
 `endContainer`为其他类型时，`range`的结束边界为`endContainer`中的第`Range.endOffset`个子节点。
 
 
-需要注意的是当`Range.collapsed : true `时， `commonAncestorContainer,startContainer,endContainer`这三个属性返回的是同一个`Node`，此时`startOffset`与`endOffset`值也相等
+需要注意的是当`Range.collapsed : true `时， `commonAncestorContainer,startContainer,endContainer`这三个属性返回的是同一个`Node`，同时`startOffset`与`endOffset`值也相等
 
 
 
@@ -122,7 +122,15 @@ selection.getRangeAt(0);
 
 ### range.setStart(startNode, startOffset);
 
-设置range的开始位置，两个参数都必须设置，设置完以后，`range.startContainer`就等于`startNode`,`range.startOffset`就等于`startOffset`。
+设置range的开始位置，两个参数都必须设置，设置完以后，`range.startContainer`就等于`startNode`,`range.startOffset`就等于`startOffset`。 
+
+需要注意 ，设置的`startOffset`不可小于0 ，也不可超出`range.startContainer`的字符个数，或者是子节点个数,比如有3个字节点，那么`startOffset`最大只能为3。
+
+再细说来，这里`startOffset`的值也分为两种情况， 
+
+一种`startOffset`表示字符个数时，`0`没有实际效果，可看作`1`,因为实际的取值是从`1`开始的。
+
+另一种`startOffset`表示子节点数是，`node.children.length`无效，`node.children`是数组，`startOffset`是从`0`开始，可视为数组的索引，所以`node.children.length`以超出索引范围，但这并不会报错，而是把`node.children.length`作为`node.children.length-1`看待了。
 
 该方法有兼容性问题，IE9+才可用。
 
@@ -137,7 +145,74 @@ selection.getRangeAt(0);
 
 ### range.setStartAfter(referenceNode);
 
-通过该方法设置后，`range.startContainer`为参数`referenceNode`的父节点，与`range.setStartBefore(referenceNode)`方法一样，不同的是`range.startOffset`为其父节点中的`referenceNode`子节点之后一个节点位置
+通过该方法设置后，`range.startContainer`为参数`referenceNode`的父节点，与`range.setStartBefore(referenceNode)`方法一样，不同的是`range.startOffset`为其父节点中的`referenceNode`子节点之后一个节点位置 
+
+### range.setEndBefore(referenceNode);
+
+与上述`setStartBefore`方法类似，只是对应改变的`range`属性不同。
+
+通过该方法，`range.endContainer`为参数`referenceNode`的父节点，`range.endOffset`为其父节点中的`referenceNode`子节点位置
+
+### range.setEndAfter(referenceNode);
+
+通过该方法，`range.endContainer`为参数`referenceNode`的父节点，`range.endOffset`为其父节点中的`referenceNode`子节点之后一个节点位置 
+
+
+
+这里再吐槽下这几个方法的文档，拿`setEndBefore`与`setEndAfter`为例，除了方法名不同外，对方法的描述居然是一模一样的
+
+>	'xxxxx' method sets the end position of a Range relative to another Node. The parent Node of end of the Range will be the same as that for the referenceNode.
+
+
+### range.selectNode(referenceNode)
+
+```
+<body><h3>第一个节点</h3><p>第二个节点</p><label >第三个节点</label>
+<script>
+	var range = document.createRange();
+	range.selectNode(document.body.childNodes[0]);
+	console.log(range); 
+	// print : {commonAncestorContainer ： body, endContainer : body ,startContainer : body,
+	// 			startOffset : 0 , endOffset : 1}
+	// 
+</script>
+</body>
+```
+
+selectNode：设置Range的范围，包括referenceNode和它的所有后代(子孙)节点。
+
+### range.selectNodeContents(referenceNode)
+
+selectNodeContents：设置Range的范围，包括它的所有后代节点。
+
+举个例子，来更清晰的说明 两者的差别:
+
+```
+<h3><p>123</p><p>456</p></h3>
+```
+
+假设上面的`h3`元素就是referenceNode，
+
+那么`range.selectNode(referenceNode)`,包含的内容就是`<h3><p>123</p><p>456</p></h3>`
+
+而`range.selectNodeContents(referenceNode)`，包含的内容则是`<p>123</p><p>456</p>`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
