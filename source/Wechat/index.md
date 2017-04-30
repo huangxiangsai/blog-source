@@ -1,1 +1,1 @@
-![](./images/wechat.jpeg)
+![](/images/wechat.jpeg)

@@ -69,7 +69,7 @@ MVC（model-view-control）模式，实际上是从三个经典的设计模式�
 
 实际上Backbone将代码分成了两部分，只有Model和View，并没有Control。
 
-![](./images/2016/backbone/backbone-mv.png)
+![](/images/2016/backbone/backbone-mv.png)
 
 这是官网上的图，从图中可以看出，通过用户在界面(View)中的操作产生了数据，将数据传入Model,Model将数据与DB同步，
 然后Model发布了'change'的事件告诉View,View再通过改变的数据重新的去渲染页面。
@@ -94,7 +94,7 @@ Router用来切换页面，根据URL的变化显示不同的内容，其实不�
 
 感觉Ruoter是从Control抽出来得概念。
 
-![](./images/2016/backbone/router.png)
+![](/images/2016/backbone/router.png)
 
 根据Router来确定，将要显示内容的View,及对应的Model。 
 

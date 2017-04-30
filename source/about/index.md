@@ -6,4 +6,4 @@
 对技术抱有无限的热情
 
 欢迎一起交流，共同进步
-![](./images/wechat.jpeg)
+![](/images/wechat.jpeg)

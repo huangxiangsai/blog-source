@@ -56,7 +56,7 @@ __Content-Type 只限三个值__
 
 几乎都是这么说的，差别只是描述方式不同，比例下面的别人写的：
 
-![](./images/2016/cors/preflight01.png)
+![](/images/2016/cors/preflight01.png)
 
 什么？ 不信， 那你随便搜索几篇相关的文章看看。
 
@@ -87,13 +87,13 @@ xhr.send(fd);
 
 然后上传文件并查看下请求
 
-![](./images/2016/cors/preflight02.png)
+![](/images/2016/cors/preflight02.png)
 
 What? 为什么会有两个请求啊。 是不是它不满足简单请求的要求（已不记得简单请求的同学往上再看看）
 
 那么，我们来看看该真实请求的请求头
 
-![](./images/2016/cors/preflight03.png)
+![](/images/2016/cors/preflight03.png)
 
 简单请求要求：
 
@@ -125,9 +125,9 @@ xhr.send(fd);
 
 去掉了`xhr.upload.onprogress`，上传后再来看下请求及请求头：
 
-![](./images/2016/cors/preflight05.png)
+![](/images/2016/cors/preflight05.png)
 
-![](./images/2016/cors/preflight04.png)
+![](/images/2016/cors/preflight04.png)
 
 只有一个请求，请求头内容还都一样。 (这到底是怎么回事...有种再也不相信爱情的赶觉了！！！)
 

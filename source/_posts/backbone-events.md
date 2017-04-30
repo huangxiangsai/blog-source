@@ -39,7 +39,7 @@ Events 相关代码有200多行
 
 对外定义的方法有:
 
-![](./images/2016/backbone/backbone-events-api.png)
+![](/images/2016/backbone/backbone-events-api.png)
 
 
 代码开始，就先定义了Backbone.Events，这是为什么呢
@@ -54,7 +54,7 @@ Backbone.Events也可以使用在任何的对象上，就像这样:`var o=_.exte
 
 上述的API方法可以分三部分：
 
-![](./images/2016/backbone/events-02.png)
+![](/images/2016/backbone/events-02.png)
 
 * 绑定事件 __on,listenTo,once,bind__ 
 

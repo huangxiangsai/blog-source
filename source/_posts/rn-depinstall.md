@@ -47,7 +47,7 @@ react-native run-ios
 
 可就在启动本地服务时却报了如下的错，本地服务直接终止了。
 
-![image](./images/2017/rn/dep-error.png)
+![image](/images/2017/rn/dep-error.png)
 
 而查了下`src`中的javaScript代码，并没有使用到`on`啊。
 
@@ -93,7 +93,7 @@ npm i  --registry http://r.cnpmjs.org/
 
 这`cnpm`到底干了啥呢，阅读了下在github上的说明,里面有这么一段：
 
-![image](./images/2017/rn/cnpm.png)
+![image](/images/2017/rn/cnpm.png)
 
 原来上面说的符号链接就是这么来的，而且还告诉我们可以切换成用`npm`来安装，于是，再次删除`./node_modules`，执行`cnpm i --by=npm` , 发现`node_modules`中不再是符号链接了，再执行`react-native run-ios`后，程序顺利的执行了，当然，当改成了`npm`方式安装，就体验不到`cnpm`带给你的飞一般的安装速度了。
 

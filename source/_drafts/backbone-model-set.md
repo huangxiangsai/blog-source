@@ -228,7 +228,7 @@ model.set('name','devsai');
 ```
 当调用 `model.set('name','devsai');`时
 
-![](./images/2016/backbone/model-set-01.png)
+![](/images/2016/backbone/model-set-01.png)
 
 
 

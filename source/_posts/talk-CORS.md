@@ -57,7 +57,7 @@ alert(123);
 
 当加载页面`index.html`后，出`123`内容的弹窗。通过查看`index.js`的响应体，会发现响应内容就是`alert(123)`。
 
-![](./images/2016/crossdomain/jsonp_1.png)
+![](/images/2016/crossdomain/jsonp_1.png)
 
 所以，可以这么思考，只要是通过script标签请求到的内容就会被当做js代码执行。
 
@@ -299,11 +299,11 @@ var b = a;
 
 *同源下的 window.onerror报错信息*
 
-![](./images/2016/crossdomain/error1.png)
+![](/images/2016/crossdomain/error1.png)
 
 *跨域下的 window.onerror报错信息*
 
-![](./images/2016/crossdomain/error2.png)
+![](/images/2016/crossdomain/error2.png)
 
 
 通过script标签上添加crossdomain属性,并在服务上配置响应头。
@@ -394,7 +394,7 @@ c) 不会使用自定义请求头（类似于 X-Modified 这种）。
 
 ## CORS兼容性
 
-![](./images/2016/crossdomain/cors_jrx.png)
+![](/images/2016/crossdomain/cors_jrx.png)
 
 从上图可只IE11,以下的就不支持CORS了。但实际上再IE8,IE9,IE10中，可以用XDomainRequest对象代替XmlHttpReuqest，发送跨域请求。
 

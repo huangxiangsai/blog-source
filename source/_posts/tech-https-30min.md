@@ -46,57 +46,57 @@ StartSSL是StartCom公司旗下的SSL证书，提供免费SSL证书服务并且�
 
 进入[https://www.startssl.com/SignUp](https://www.startssl.com/SignUp)。
 
-![](./images/2016/ssl/sginUp.png)
+![](/images/2016/ssl/sginUp.png)
 
 2 注册很简单只需要填个邮箱发送验证码
 
-![](./images/2016/ssl/verification.png)
+![](/images/2016/ssl/verification.png)
 
 3 然后填入获得的验证码,点击按钮后会跳转至设置密码
 
-![](./images/2016/ssl/sginUp2.png)
+![](/images/2016/ssl/sginUp2.png)
 
 
 
-![](./images/2016/ssl/sginUpsuccess.png)
+![](/images/2016/ssl/sginUpsuccess.png)
 
 4 注册成功后，会让你下载用于登录的证书，因为该网站提供了两种登录方式，客户端证书认证和邮箱登录（填写邮箱，获得验证码登录），个人感觉使用邮箱也很方便。
 
-![](./images/2016/ssl/login.png)
+![](/images/2016/ssl/login.png)
 
 ## 申请免费的SSL
 
 1 先添加验证域名，选择选项卡的`Validations Wizard`，并选择`Domain Validation (for SSL certificate)`
 点击`Validation`
 
-![](./images/2016/ssl/domainvalid.png)
+![](/images/2016/ssl/domainvalid.png)
 
 2 填入域名，并在域名所有者邮箱（或域名对应的企业邮箱）中获取发送的验证码
 
-![](./images/2016/ssl/inputdoamin.png)
+![](/images/2016/ssl/inputdoamin.png)
 
 3 添加的域名验证成功，点击`To "Order SSL Certificate "`
 
-![](./images/2016/ssl/validsuccess.png)
+![](/images/2016/ssl/validsuccess.png)
 
 4 现在可以开始给自己的域名申请StartSSL免费SSL证书了，这里添加用于申请证书的完整的域名
 
-![](./images/2016/ssl/addfulldomain.png)
+![](/images/2016/ssl/addfulldomain.png)
 
 5 申请StartSSL免费SSL时，会要求填入CSR
 
-![](./images/2016/ssl/gencert.png)
+![](/images/2016/ssl/gencert.png)
 
 6 CSR 生成可以有两种方式，一种是使用StartSSL提供的`[StartComTool.exe](https://download.startpki.com/startcom/startcomtool.exe)`适用于Window，另一种方式也可以使用`openssl`命令,适用于Mac,liunx等。
 
 	openssl req -newkey rsa:2048 -keyout yourname.key -out yourname.csr
 
 
-![](./images/2016/ssl/localgen.png)
+![](/images/2016/ssl/localgen.png)
 
 7 把生成的(`youname.csr`)CSR签名证书请求内容，粘贴进去
 
-![](./images/2016/ssl/pastecert.png)
+![](/images/2016/ssl/pastecert.png)
 
 8 然后StartSSL就可以免费SSL下载使用
 
@@ -105,7 +105,7 @@ StartSSL是StartCom公司旗下的SSL证书，提供免费SSL证书服务并且�
 
 下载下来的SSL是zip格式的压缩包，解压后有如下内容
 
-![](./images/2016/ssl/downloadunzip.png)
+![](/images/2016/ssl/downloadunzip.png)
 
 分别提供了几种web服务所需的ssl认证文件
 
@@ -130,7 +130,7 @@ ssl_session_cache          shared:SSL:50m;
 
 然后启动nginx ,输入密码（该密码是生成本地CSR时设置的）
 
-![](./images/2016/ssl/inputPEM.jpg)
+![](/images/2016/ssl/inputPEM.jpg)
 
 # 大功告成
 
