@@ -4,11 +4,11 @@
 
 # Site
 title: SAI的技术博客
-subtitle:  路漫漫其修远兮
+subtitle:  最可怕的敌人，就是没有坚强的信念。
 keywords: 个人，博客，个人博客，技术博客，SAI，向赛，devsai，黄向赛，前端开发，关注前端
 description: 分享技术，不断提高，不断前行，黄向赛的个人技术博客，http://www.devsai.com，关注技术，关注前端，关注后端，关注移动端
 author: SAI
-language: zh-Hans
+language: zh-CN
 timezone:
 
 # URL
@@ -69,7 +69,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
-theme: yelee
+theme: cafe
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
