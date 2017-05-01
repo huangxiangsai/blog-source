@@ -15,7 +15,7 @@
     }, searchAnimDuration);
   };
 
-  $('#nav-search-btn').on('click', function(){
+  $('#nav-search-btn').on('click', function(e){
     if (isSearchAnim) return;
 
     startSearchAnim();
@@ -23,13 +23,35 @@
     stopSearchAnim(function(){
       $('.search-form-input').focus();
     });
+    e.stopPropagation();
+    return false;
   });
 
-  $('.search-form-input').on('blur', function(){
-    startSearchAnim();
-    $searchWrap.removeClass('on');
-    stopSearchAnim();
-  });
+  $('.search-form-input').on('keyup',function(){
+    var val = $('.search-form-input').val();
+    if($.trim(val) != ''){
+      searchSend($.trim(val));
+    }
+  })
+
+  // var blurINputSearch = function(){
+  //   $('.search-form-input').off('blur').on('blur', function(){
+  //     startSearchAnim();
+  //     $searchWrap.removeClass('on');
+  //     stopSearchAnim();
+  //   });
+  // }
+
+  $(document).on('click',function(e){
+    if( !$(e.target).parents('#search-form-wrap').length ){
+        startSearchAnim();
+        $searchWrap.removeClass('on');
+        stopSearchAnim();
+    }
+  })
+
+  // blurINputSearch();
+
 
   // Share
   $('body').on('click', function(){
@@ -146,4 +168,34 @@
 
     $container.removeClass('mobile-nav-on');
   });
+
+  var client = algoliasearch("RUT91YQZ5S", '6fdc28d43bf3d88bad9315ccf5a1a834');
+  var index = client.initIndex('devsai-blog');
+
+  var searchSend = function(val){
+    index.search(val, searchCallback);
+  }
+
+  function searchCallback(err, content) {
+      if (err) {
+          console.error(err);
+          return;
+      }
+      if(!$('.search-result-container').length ){
+        $('#search-form-wrap').append('<div class="search-result-container" unselectable="on"><ul unselectable="on"></ul></div>')
+      }
+      var list = content.hits;
+      var liArray = [];
+      for(var i = 0; i < list.length; i++){
+        var row = list[i];
+        liArray.push('<li unselectable="on"><a href="/'+row.path+'" unselectable="on">Blog: '+row.title+'</a> </li>')
+      }
+      var t = liArray.length ? liArray.join('') : '未找到搜索结果';
+      $('.search-result-container').find('ul').html(t);
+      $('.search-result-container').show();
+  } 
+
 })(jQuery);
+
+        
+

@@ -66,6 +66,29 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+# plugins
+# plugins:
+#   - hexo-algoliasearch
+
+algolia:
+  appId: "RUT91YQZ5S"
+  apiKey: "6fdc28d43bf3d88bad9315ccf5a1a834"
+  adminApiKey: "d661a825fbfa0904ab529e2b1bdf7f5a"
+  chunkSize: 5000
+  indexName: "devsai-blog"
+  fields:
+    - title
+    - tags
+    - slug
+    - excerpt
+    - description
+    - content:strip
+    - photos
+    - gallery
+    - path
+
+
+
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
