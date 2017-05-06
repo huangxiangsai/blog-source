@@ -27,7 +27,7 @@ description: ""
 
 程序员的智慧的伟大的，通常我们有两种实现方式：轮训、Comet技术
 
-## 轮训
+## polling(轮询)
 
 简单的说，就是通过`window.setInterval`方法定时的发送ajax请求（据说更久远的页面想要实时显示最新的内容，是通过设置meta来定时的刷新页面）来获取服务端数据。
 
@@ -39,4 +39,14 @@ description: ""
 
 ## Comet技术
 
+Comet技术，也可以分为两类：`long polling(长轮询)`和`streaming`
 
+### long polling (长轮询)
+
+# WebSocket是什么
+
+WebSocket是一个协议，但除此之外，W3C制定了个WebSocket API,通过这个API可以控制协议，并且可以通过服务端的响应去触发事件。(协议是IETF开发的，API是W3C开发的)
+
+目前WebSocket API已经被大多数现代浏览器支持了。
+
+## WebSocket能做啥
