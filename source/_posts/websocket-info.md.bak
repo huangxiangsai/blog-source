@@ -27,6 +27,8 @@ description: ""
 
 程序员的智慧的伟大的，通常我们有两种实现方式：轮训、Comet技术
 
+## WebSocket历史
+
 ## polling(轮询)
 
 简单的说，就是通过`window.setInterval`方法定时的发送ajax请求（据说更久远的页面想要实时显示最新的内容，是通过设置meta来定时的刷新页面）来获取服务端数据。
@@ -43,6 +45,13 @@ Comet技术，也可以分为两类：`long polling(长轮询)`和`streaming`
 
 ### long polling (长轮询)
 
+  ajax 请求
+  jsonp
+
+### streaming
+  
+  iframe, form 
+
 # WebSocket是什么
 
 WebSocket是一个协议，但除此之外，W3C制定了个WebSocket API,通过这个API可以控制协议，并且可以通过服务端的响应去触发事件。(协议是IETF开发的，API是W3C开发的)
@@ -50,3 +59,36 @@ WebSocket是一个协议，但除此之外，W3C制定了个WebSocket API,通过
 目前WebSocket API已经被大多数现代浏览器支持了。
 
 ## WebSocket能做啥
+
+简单的说，http请求能做的，它都能做，http不能做的，它也能做。
+
+常用的用途有以下几种:
+
+* 实现服务端的推送，比如：私信,站内通知，各种实时的监控等功能
+* 实现聊天室功能
+* 用来上传文件，可实现断点续传
+
+
+
+# WebSocket的兼容性
+
+
+# 对于不支持WebSocket的浏览器如何使用WebSocket
+
+* 使用插件
+* 使用垫片
+[Modernizr-websocket]( https://github.com/Modernizr/Modernizr/ wiki/HTML5-Cross-Browser-Polyfills.
+)
+* 降级处理,如socket.io，在不支持WebSocket的情况下，使用ajax轮训或Commet技术,通过socket.io的好处，可使用同一套WebSocket API，来使用WebSocket或Commet技术
+
+## blob 与 arrayBuffer
+
+## WebSocket 代理
+
+## WebSocket 与 HTML5
+
+说到WebSocket，我们就会想到HTML5，那么这两种有什么关系呢，
+
+
+
+## socket.io
