@@ -1,11 +1,17 @@
-## node-sass安装失败引发的思考
+---
+title : node-sass安装失败引发的思考
+tag: [node-sass]
+date: 2018-04-07
+description : "在mac OS或liunx系统下，有时候在安装node-sass时会出现，Permissions Errors 的错误提示，那么这种情况下，我们要怎么处理呢。"
+---
+
 
 
 在mac OS或liunx系统下，有时候在安装node-sass时会出现，`Permissions Errors`
 
 可能出现的情况是这样:
 
-![loop reinstall](../images/2018/node-sass-reinstall-error.png)
+![loop reinstall](/images/2018/node-sass-reinstall-error.png)
 
 ------
 
@@ -59,7 +65,7 @@ npm install --user=root node-sass
 
 如果你是直接使用了已经编译后的node版本
 
-![](../images/2018/node-download.png)
+![](/images/2018/node-download.png)
 
 那么你解压之后的目录权限可能是这样的
 
@@ -80,6 +86,8 @@ chown root:root node-v8.10.0-linux-x64
 
 ## 方案四 重新安装node(推荐使用nvm)
 
+nvm是个node版本管理工具，可以方便的下载安装node，并且可以方便的切换node版本
+
 这是直接贴上nvm地址，如何安装[看文档](https://github.com/creationix/nvm)
 
 
@@ -95,7 +103,9 @@ chown root:root node-v8.10.0-linux-x64
 
 ```
 
-通过上述方法的其中一种，就可以解决问题。
+通过上述方法的其中一种，就可以解决问题。
+
+
 
 ## 参考
 
